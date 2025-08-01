@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Skill Connect</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <style>
+      .subject-section {
+        background: linear-gradient(to right, #220359, #4906bf);
+        color: white;
+      }
+      .tutor-card img {
+        max-height: 300px;
+        object-fit: cover;
+      }
+      .menu-dropdown .dropdown-menu {
+        left: auto;
+        right: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+      <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img
+            src="../logo.jpeg"
+            alt="SkillConnect Logo"
+            style="height: 60px; width: auto; object-fit: contain"
+          />
+        </a>
+
+        <!-- Navigation links + Icons + Buttons -->
+        <div class="collapse navbar-collapse justify-content-between">
+          <!-- Center nav links -->
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="./landing_page.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./all_jobs.html">All Jobs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./all_courses.html">All Courses</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Services
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="./registration_form_students_tutor.html"
+                    >Tutoring</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="./registration_form_jobSeekers_Employeers.html"
+                    >Job Matching</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./faq.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./aboutUs.html">About Us</a>
+            </li>
+          </ul>
+          <div class="d-flex align-items-center gap-3">
+            <div class="dropdown menu-dropdown">
+              <button
+                class="btn btn-outline-dark dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Menu
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="add_course.php">Add Courses</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="my_courses.php">My Courses</a>
+                </li>
+
+                <li>
+                  <a class="dropdown-item" href="schedule_student_session.php"
+                    >Book Session</a
+                  >
+                </li>
+
+                <li>
+                  <a class="dropdown-item" href="timetable.php">My Timetable</a>
+                </li>
+
+                <li>
+                  <a class="dropdown-item" href="tutor_feedback.php"
+                    >Tutor Feedback</a
+                  >
+                </li>
+
+                <li>
+                  <a class="dropdown-item" href="submit_feedback.php"
+                    >Complain</a
+                  >
+                </li>
+
+                <li><a class="dropdown-item" href="chat.php">Chat</a></li>
+              </ul>
+            </div>
+            <!-- Right side icons and buttons -->
+            <div class="d-flex align-items-center nav-icons">
+              <div class="nav-buttons">
+                <a href="../logout.php" class="btn btn-primary">Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Subject Tutor Section -->
+    <section
+      class="subject-section d-flex align-items-center justify-content-center"
+    >
+      <div class="container py-5">
+        <div class="row align-items-center">
+          <div class="col-md-6 text-center text-md-start mb-4 mb-md-0">
+            <h1 class="fw-bold">Find Expert<br />Tutors by<br />Subject</h1>
+          </div>
+          <div class="col-md-6 d-flex justify-content-center">
+            <div class="card tutor-card text-center border-0 shadow">
+              <img
+                src="../skillConnecti1.jpeg"
+                alt="Video Editing"
+                class="card-img-top rounded-top"
+              />
+              <div class="card-body bg-white rounded-bottom">
+                <h5 class="fw-bold text-dark mb-0">Video Editing</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Active Courses -->
+    <section class="bg-light py-5">
+      <div class="container">
+        <h3 class="text-center fw-bold mb-4">Active Courses</h3>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+          <div class="col">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <img
+                src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=400&h=300&q=80"
+                class="card-img-top"
+                alt="Web Design"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Web Design</h5>
+                <a href="#" class="btn btn-outline-primary">Enroll Now</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <img
+                src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?auto=format&fit=crop&w=400&h=300&q=80"
+                class="card-img-top"
+                alt="Video Editing"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Video Editing</h5>
+                <a href="#" class="btn btn-outline-dark">Enroll Now</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <img
+                src="https://images.unsplash.com/photo-1559028012-481c04fa702d?auto=format&fit=crop&w=400&h=300&q=80"
+                class="card-img-top"
+                alt="Canva Designing"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Canva Designing</h5>
+                <a href="#" class="btn btn-outline-primary">Enroll Now</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100 text-center border-0 shadow-sm">
+              <img
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&h=300&q=80"
+                class="card-img-top"
+                alt="Affiliate Marketing"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Affiliate Marketing</h5>
+                <a href="#" class="btn btn-outline-success">Enroll Now</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-dark text-white pt-5 pb-4">
+      <div class="container">
+        <div class="row">
+          <!-- Logo and Tagline -->
+          <div class="col-lg-4 mb-4">
+            <a class="navbar-brand d-flex align-items-center mb-3" href="#">
+              <img src="../logo.jpeg" alt="SkillConnect Logo" height="60" />
+            </a>
+            <p class="text-muted">
+              Temporary minds. Share skills. Shape the future – with
+              skillConnect.
+            </p>
+            <p class="text-muted small">
+              © 2025 SkillConnect. All rights reserved.
+            </p>
+            <p class="text-muted small mb-0">Group B</p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-lg-2 col-md-4 mb-4">
+            <h5 class="text-uppercase fw-bold mb-4">All Pages</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a
+                  href="./landing_page.html"
+                  class="text-white text-decoration-none"
+                  >Home</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="./all_courses.html"
+                  class="text-white text-decoration-none"
+                  >All Courses</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="./faq.html" class="text-white text-decoration-none"
+                  >Contact</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="./aboutUs.html" class="text-white text-decoration-none"
+                  >About Us</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="./all_jobs.html"
+                  class="text-white text-decoration-none"
+                  >Jobs</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Policies -->
+          <div class="col-lg-3 col-md-4 mb-4">
+            <h5 class="text-uppercase fw-bold mb-4">Policies</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Terms and Conditions</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Refund and Returns Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="my-4 bg-secondary" />
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="small text-white mb-0">
+              © 2025 SkillConnect. All rights reserved.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <p class="small text-white mb-0">Group B</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SkillConnect Admin - Feedback Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background-color: #f8f9fa; }
+        .navbar { padding: 1rem 2rem; }
+        .navbar-nav .nav-link { font-weight: 600; margin: 0 10px; }
+        .navbar-brand img { height: 80px; }
+
+        .admin-sidebar {
+            background: linear-gradient(to bottom, #220359, #4906bf);
+            color: white;
+            padding-top: 20px;
+            min-height: calc(100vh - 80px);
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 1000; 
+        }
+
+        .admin-sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 3px solid #ffc107;
+        }
+
+        .admin-sidebar .nav-link i { margin-right: 10px; font-size: 1.1rem; }
+        .admin-content { padding: 30px; flex-grow: 1; }
+        .admin-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .btn-primary { background-color: #0d6efd; border-color: #0d6efd; }
+        .btn-primary:hover { background-color: #0b5ed7; border-color: #0a58ca; }
+        .btn-outline-primary { color: #0d6efd; border-color: #0d6efd; }
+        .btn-outline-primary:hover { background-color: #0d6efd; color: white; }
+        .text-primary { color: #0d6efd !important; }
+
+        .badge.bg-success { background-color: #198754 !important; }
+        .badge.bg-danger { background-color: #dc3545 !important; }
+        .badge.bg-warning { background-color: #ffc107 !important; }
+        .badge.bg-info { background-color: #0dcaf0 !important; }
+        .badge.bg-secondary { background-color: #6c757d !important; }
+        
+        footer { background-color: #212529 !important; color: white; }
+        footer .text-muted { color: rgba(255, 255, 255, 0.7) !important; }
+
+        .offcanvas { transition: none !important; }
+        
+        @media (max-width: 767.98px) {
+            .admin-sidebar { display: none; }
+            .offcanvas-start { width: 250px; }
+            .admin-content { width: 100%; }
+            .navbar-toggler { display: block; }
+        }
+
+        @media (min-width: 768px) {
+            .navbar-toggler { display: none; }
+            .admin-sidebar { display: block !important; }
+            .offcanvas { visibility: hidden; }
+            .offcanvas.show { transform: translateX(-100%); }
+        }
+
+        .sub-content-section { display: none; }
+        .sub-content-section.active { display: block; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm">
+    <div class="container-fluid">
+        <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebarOffcanvas" aria-controls="adminSidebarOffcanvas">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand d-flex align-items-center" href="./landing_page.html">
+            <img src="logo.jpeg" alt="SkillConnect Logo"/>
+        </a>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                   <li class="nav-item"><a class="nav-link" href="./admin_dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="./user_management.html"><i class="bi bi-people"></i> Manage Students </a></li>
+            <li class="nav-item"><a class="nav-link" href="./courses_page_admin.html"><i class="bi bi-book"></i>Manage Courses</a></li>
+            <li class="nav-item"><a class="nav-link" href="./tutor_management.html"><i class="bi bi-calendar-check"></i>Manage Tutoring Sessions</a></li>
+            <li class="nav-item"><a class="nav-link active" href="job_listing_management.html" data-target="active-listings-content"><i class="bi bi-briefcase"></i>Manage Job Listings</a></li>
+            <li class="nav-item"><a class="nav-link" href="applications_admin.html"><i class="bi bi-file-earmark-text"></i> Manage JobSeekers</a></li>
+            <li class="nav-item"><a class="nav-link" href="reports_admin.html" data-target="reports-content"><i class="bi bi-graph-up"></i> Manage Employers</a></li>
+            <li class="nav-item"><a class="nav-link" href="admin_messages.html" data-target="messages-content"><i class="bi bi-chat-dots"></i> Manage Complaints</a></li>
+            <li class="nav-item"><a class="nav-link" href="system_settings_admin.html"><i class="bi bi-box-seam"></i> System Settings</a></li>
+        </ul>
+            <div class="d-flex align-items-center nav-icons">
+                <span class="me-3 fw-bold">Admin User</span>
+                <i class="bi bi-person-circle fs-4 me-3"></i>
+                <div class="nav-buttons">
+                    <a href="../login.html" id="logout-btn" class="btn btn-outline-primary">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="d-flex">
+    <div class="admin-sidebar col-md-2">
+        <ul class="nav flex-column">
+              <ul class="nav flex-column">
+    <li class="nav-item"><a class="nav-link" href="./admin_dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" href="./user_management.html"><i class="bi bi-people"></i> Manage Students </a></li>
+    <li class="nav-item"><a class="nav-link" href="./courses_page_admin.html"><i class="bi bi-book"></i>Manage Courses</a></li>
+    <li class="nav-item"><a class="nav-link" href="./tutor_management.html"><i class="bi bi-calendar-check"></i>Manage Tutoring Sessions</a></li>
+    <li class="nav-item"><a class="nav-link" href="job_listing_management.html" data-target="active-listings-content"><i class="bi bi-briefcase"></i>Manage Job Listings</a></li>
+    <li class="nav-item"><a class="nav-link" href="applications_admin.html"><i class="bi bi-file-earmark-text"></i> Manage JobSeekers</a></li>
+    <li class="nav-item"><a class="nav-link" href="reports_admin.html" data-target="reports-content"><i class="bi bi-graph-up"></i> Manage Employers</a></li>
+    <li class="nav-item"><a class="nav-link active" href="admin_messages.html" data-target="messages-content"><i class="bi bi-chat-dots"></i> Manage Complaints</a></li>
+    <li class="nav-item"><a class="nav-link" href="system_settings_admin.html"><i class="bi bi-box-seam"></i> System Settings</a></li>
+</ul>
+    </div>
+
+    <div class="offcanvas offcanvas-start admin-sidebar" tabindex="-1" id="adminSidebarOffcanvas">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title text-white">Admin Navigation</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+           <ul class="nav flex-column">
+    <li class="nav-item"><a class="nav-link" href="./admin_dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" href="./user_management.html"><i class="bi bi-people"></i> Manage Students </a></li>
+    <li class="nav-item"><a class="nav-link" href="./courses_page_admin.html"><i class="bi bi-book"></i>Manage Courses</a></li>
+    <li class="nav-item"><a class="nav-link" href="./tutor_management.html"><i class="bi bi-calendar-check"></i>Manage Tutoring Sessions</a></li>
+    <li class="nav-item"><a class="nav-link" href="job_listing_management.html" data-target="active-listings-content"><i class="bi bi-briefcase"></i>Manage Job Listings</a></li>
+    <li class="nav-item"><a class="nav-link" href="applications_admin.html"><i class="bi bi-file-earmark-text"></i> Manage JobSeekers</a></li>
+    <li class="nav-item"><a class="nav-link" href="reports_admin.html" data-target="reports-content"><i class="bi bi-graph-up"></i> Manage Employers</a></li>
+    <li class="nav-item"><a class="nav-link active" href="admin_messages.html" data-target="messages-content"><i class="bi bi-chat-dots"></i> Manage Complaints</a></li>
+    <li class="nav-item"><a class="nav-link" href="system_settings_admin.html"><i class="bi bi-box-seam"></i> System Settings</a></li>
+</ul>
+        </div>
+    </div>
+
+    <div class="admin-content col-md-10">
+        <h1 class="mb-4 fw-bold text-primary">Feedback Management</h1>
+
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" data-target="feedback-content">Student-Tutor Feedback</a>
+            </li>
+        </ul>
+
+        <div id="feedback-content" class="sub-content-section active">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">Student-Tutor Feedback</h4>
+                <div class="row mb-3">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <input type="text" id="feedback-search-input" class="form-control" placeholder="Search by Description, Student ID, or Tutor ID...">
+                            <button class="btn btn-outline-primary" type="button" id="feedback-search-btn"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="feedback-status-filter" class="form-select">
+                            <option value="">All Statuses</option>
+                            <option value="unread">Unread</option>
+                            <option value="read">Read</option>
+                            <option value="replied">Replied</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="feedback-sort-by" class="form-select">
+                            <option value="submitted_at_desc">Newest First</option>
+                            <option value="submitted_at_asc">Oldest First</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Student ID</th>
+                                <th scope="col">Tutor ID</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Submitted At</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feedback-table">
+                            <!-- Feedback rows will be dynamically loaded here by JavaScript -->
+                            <tr>
+                                <td colspan="7" class="text-center">Loading feedback...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav>
+                    <ul class="pagination justify-content-center" id="feedback-pagination">
+                        <!-- Pagination will be dynamically loaded here -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Feedback Details Modal -->
+<div class="modal fade" id="viewFeedbackModal" tabindex="-1" aria-labelledby="viewFeedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewFeedbackModalLabel">Feedback Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Feedback ID:</strong> <span id="modal-feedback-id"></span></p>
+                <p><strong>Student ID:</strong> <span id="modal-feedback-student-id"></span></p>
+                <p><strong>Tutor ID:</strong> <span id="modal-feedback-tutor-id"></span></p>
+                <p><strong>Submitted At:</strong> <span id="modal-feedback-submitted-at"></span></p>
+                <p><strong>Status:</strong> <span id="modal-feedback-status-badge"></span></p>
+                <hr>
+                <h6>Description:</h6>
+                <p id="modal-feedback-description" class="alert alert-light border"></p>
+                <hr>
+                <h6>Admin Reply:</h6>
+                <div id="modal-feedback-reply-display" class="alert alert-info border" style="display: none;"></div>
+                <textarea class="form-control mb-3" id="feedback-reply-textarea" rows="5" placeholder="Type your reply here..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="send-feedback-reply-btn"><i class="bi bi-send-fill"></i> Send Reply</button>
+                <button type="button" class="btn btn-outline-success" id="mark-feedback-read-btn"><i class="bi bi-envelope-open"></i> Mark as Read</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer class="bg-dark text-white pt-5 pb-4">
+    <div class="container text-center p-4 text-muted">© 2025 SkillConnect. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mainTabs = document.querySelectorAll('.nav-tabs .nav-link');
+    const contentSections = document.querySelectorAll('.admin-content .sub-content-section');
+
+    const API_BASE_URL = './'; // For single-folder setup
+
+    function showContent(targetId) {
+        contentSections.forEach(section => section.classList.remove('active'));
+        const targetContent = document.getElementById(targetId);
+        if (targetContent) {
+            targetContent.classList.add('active');
+        }
+        mainTabs.forEach(tab => tab.classList.toggle('active', tab.dataset.target === targetId));
+    }
+
+    // Function to fetch and render feedback
+    async function fetchAndRenderFeedback() {
+        const tableBody = document.getElementById('feedback-table');
+        tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Loading feedback...</td></tr>'; // Loading message
+
+        const searchTerm = document.getElementById('feedback-search-input').value;
+        const statusFilter = document.getElementById('feedback-status-filter').value;
+        const sortBy = document.getElementById('feedback-sort-by').value;
+
+        const params = new URLSearchParams();
+        if (searchTerm) params.append('search', searchTerm);
+        if (statusFilter) params.append('status', statusFilter);
+        if (sortBy) params.append('sort', sortBy);
+
+        let url = `${API_BASE_URL}get_feedback.php?${params.toString()}`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
+            }
+            const result = await response.json();
+
+            tableBody.innerHTML = ''; // Clear loading message
+
+            if (result.success && result.data.length > 0) {
+                result.data.forEach(feedback => {
+                    const row = tableBody.insertRow();
+                    let statusBadgeClass = 'bg-secondary';
+                    let statusText = 'Unknown';
+                    if (feedback.reply) {
+                        statusBadgeClass = 'bg-primary';
+                        statusText = 'Replied';
+                    } else if (feedback.read_by_admin === '1' || feedback.read_by_admin === true) {
+                        statusBadgeClass = 'bg-success';
+                        statusText = 'Read';
+                    } else {
+                        statusBadgeClass = 'bg-danger';
+                        statusText = 'New';
+                    }
+
+                    row.innerHTML = `
+                        <td>${feedback.id}</td>
+                        <td>${feedback.student_id}</td>
+                        <td>${feedback.tutor_id}</td>
+                        <td>${feedback.description.substring(0, 100)}${feedback.description.length > 100 ? '...' : ''}</td>
+                        <td>${feedback.submitted_at}</td>
+                        <td><span class="badge ${statusBadgeClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-info me-1 view-feedback-btn"
+                                data-id="${feedback.id}"
+                                data-student-id="${feedback.student_id}"
+                                data-tutor-id="${feedback.tutor_id}"
+                                data-description="${encodeURIComponent(feedback.description)}"
+                                data-submitted-at="${feedback.submitted_at}"
+                                data-reply="${encodeURIComponent(feedback.reply || '')}"
+                                data-replied-at="${feedback.replied_at || ''}"
+                                data-read-by-admin="${feedback.read_by_admin}"
+                                data-bs-toggle="modal" data-bs-target="#viewFeedbackModal">
+                                <i class="bi bi-eye"></i> View
+                            </button>
+                        </td>
+                    `;
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">No feedback found.</td></tr>';
+            }
+        } catch (error) {
+            console.error('Error fetching feedback:', error);
+            tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Error loading feedback: ${error.message}. Check console for details.</td></tr>`;
+        }
+    }
+
+    // Event listeners for filters and search
+    document.getElementById('feedback-search-btn').addEventListener('click', fetchAndRenderFeedback);
+    document.getElementById('feedback-status-filter').addEventListener('change', fetchAndRenderFeedback);
+    document.getElementById('feedback-sort-by').addEventListener('change', fetchAndRenderFeedback);
+
+    // Event listener for opening the feedback modal
+    document.getElementById('feedback-table').addEventListener('click', function(event) {
+        const viewBtn = event.target.closest('.view-feedback-btn');
+        if (viewBtn) {
+            const feedbackId = viewBtn.dataset.id;
+            const studentId = viewBtn.dataset.studentId;
+            const tutorId = viewBtn.dataset.tutorId;
+            const description = decodeURIComponent(viewBtn.dataset.description);
+            const submittedAt = viewBtn.dataset.submittedAt;
+            const reply = decodeURIComponent(viewBtn.dataset.reply);
+            const repliedAt = viewBtn.dataset.repliedAt;
+            const readByAdmin = viewBtn.dataset.readByAdmin === '1' || viewBtn.dataset.readByAdmin === 'true';
+
+            document.getElementById('modal-feedback-id').textContent = feedbackId;
+            document.getElementById('modal-feedback-student-id').textContent = studentId;
+            document.getElementById('modal-feedback-tutor-id').textContent = tutorId;
+            document.getElementById('modal-feedback-submitted-at').textContent = submittedAt;
+            document.getElementById('modal-feedback-description').textContent = description;
+            
+            const replyTextArea = document.getElementById('feedback-reply-textarea');
+            const replyDisplayDiv = document.getElementById('modal-feedback-reply-display');
+            const markReadBtn = document.getElementById('mark-feedback-read-btn');
+            const sendReplyBtn = document.getElementById('send-feedback-reply-btn');
+            
+            // Set initial state for reply area
+            if (reply) {
+                replyDisplayDiv.textContent = reply;
+                replyDisplayDiv.style.display = 'block';
+                replyTextArea.value = ''; // Clear textarea if reply exists
+                replyTextArea.placeholder = 'Reply already sent. Type here to update it.';
+                sendReplyBtn.textContent = 'Update Reply';
+                sendReplyBtn.classList.remove('btn-primary');
+                sendReplyBtn.classList.add('btn-info');
+            } else {
+                replyDisplayDiv.style.display = 'none';
+                replyTextArea.value = '';
+                replyTextArea.placeholder = 'Type your reply here...';
+                sendReplyBtn.textContent = 'Send Reply';
+                sendReplyBtn.classList.remove('btn-info');
+                sendReplyBtn.classList.add('btn-primary');
+            }
+
+            // Update status badge in modal
+            const statusBadge = document.getElementById('modal-feedback-status-badge');
+            statusBadge.classList = ['badge']; // Reset classes
+            let modalStatusText = 'New';
+            if (reply) {
+                statusBadge.classList.add('bg-primary');
+                modalStatusText = 'Replied';
+            } else if (readByAdmin) {
+                statusBadge.classList.add('bg-success');
+                modalStatusText = 'Read';
+            } else {
+                statusBadge.classList.add('bg-danger');
+                modalStatusText = 'New';
+            }
+            statusBadge.textContent = modalStatusText;
+
+            // Mark as Read button visibility
+            if (readByAdmin || reply) { // Also hide if a reply exists
+                markReadBtn.style.display = 'none';
+            } else {
+                markReadBtn.style.display = 'inline-block';
+            }
+
+            // Set data-id on buttons for easy access in handlers
+            sendReplyBtn.dataset.id = feedbackId;
+            markReadBtn.dataset.id = feedbackId;
+        }
+    });
+
+    // Handle Send Reply button click
+    document.getElementById('send-feedback-reply-btn').addEventListener('click', async function() {
+        const feedbackId = this.dataset.id;
+        const replyText = document.getElementById('feedback-reply-textarea').value.trim();
+
+        if (!replyText) {
+            alert('Reply cannot be empty.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}reply_feedback.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: feedbackId,
+                    reply: replyText
+                })
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                alert(result.message);
+                const modal = bootstrap.Modal.getInstance(document.getElementById('viewFeedbackModal'));
+                modal.hide();
+                fetchAndRenderFeedback(); // Refresh feedback list
+            } else {
+                alert('Error sending reply: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Error sending reply:', error);
+            alert('An error occurred while sending the reply. Please try again.');
+        }
+    });
+
+    // Handle Mark as Read button click
+    document.getElementById('mark-feedback-read-btn').addEventListener('click', async function() {
+        const feedbackId = this.dataset.id;
+
+        try {
+            const response = await fetch(`${API_BASE_URL}mark_feedback_read.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: feedbackId })
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                alert(result.message);
+                const modal = bootstrap.Modal.getInstance(document.getElementById('viewFeedbackModal'));
+                modal.hide();
+                fetchAndRenderFeedback(); // Refresh feedback list
+            } else {
+                alert('Error marking as read: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Error marking as read:', error);
+            alert('An error occurred while marking as read. Please try again.');
+        }
+    });
+
+    // Initial load for feedback content
+    showContent('feedback-content');
+    fetchAndRenderFeedback();
+});
+</script>
+</body>
+</html>

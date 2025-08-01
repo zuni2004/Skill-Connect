@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SkillConnect Admin - Tutoring Sessions & Tutors</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
+    <style>
+        /* General styling for smooth transitions and body background */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            transition: background 0.3s, color 0.3s;
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            padding: 1rem 2rem;
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 600;
+            margin: 0 10px;
+        }
+
+        .nav-icons i {
+            font-size: 1.3rem;
+            margin-right: 15px;
+            color: #1e1e2f;
+            cursor: pointer;
+        }
+
+        .nav-buttons .btn {
+            margin-left: 10px;
+        }
+
+        .navbar-brand img {
+            height: 80px; /* Adjust logo height */
+        }
+
+        /* Admin sidebar styling */
+        .admin-sidebar {
+            background: linear-gradient(to bottom, #220359, #4906bf); /* Gradient background for sidebar */
+            color: white;
+            padding-top: 20px;
+            min-height: calc(100vh - 80px); /* Adjust height relative to navbar */
+            position: sticky; /* Sticky sidebar */
+            top: 0;
+            left: 0;
+            z-index: 1000; 
+        }
+
+        .admin-sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8); /* Lighter text for non-active links */
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1); /* Hover and active background */
+            color: white;
+            border-left: 3px solid #ffc107; /* Highlight for active link */
+        }
+
+        .admin-sidebar .nav-link i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Main content area styling */
+        .admin-content {
+            padding: 30px;
+            background-color: #f8f9fa;
+            flex-grow: 1;
+        }
+
+        .admin-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Soft shadow for cards */
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        /* Custom button and text colors to match primary theme */
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+
+        .btn-outline-primary {
+            color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .btn-outline-primary:hover {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .text-primary {
+            color: #0d6efd !important;
+        }
+        
+        /* Badge colors */
+        .badge.bg-success { background-color: #198754 !important; }
+        .badge.bg-danger { background-color: #dc3545 !important; }
+        .badge.bg-info { background-color: #0dcaf0 !important; }
+        .badge.bg-warning { background-color: #ffc107 !important; }
+        .badge.bg-secondary { background-color: #6c757d !important; }
+
+        /* Footer styling */
+        footer {
+            background-color: #212529 !important;
+            color: white;
+        }
+
+        footer .text-muted {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        .offcanvas {
+            transition: none !important;
+        }
+        
+        /* Responsive adjustments for mobile devices */
+        @media (max-width: 767.98px) {
+            .admin-sidebar { display: none; }
+            .offcanvas-start { width: 250px; }
+            .admin-content { width: 100%; }
+            .navbar-toggler { display: block; }
+        }
+
+        /* Responsive adjustments for larger screens */
+        @media (min-width: 768px) {
+            .navbar-toggler { display: none; }
+            .admin-sidebar { display: block !important; }
+            .offcanvas { visibility: hidden; }
+            .offcanvas.show { transform: translateX(-100%); }
+        }
+
+        /* Content section display control */
+        .sub-content-section { display: none; }
+        .sub-content-section.active { display: block; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm">
+    <div class="container-fluid">
+        <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebarOffcanvas" aria-controls="adminSidebarOffcanvas" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand d-flex align-items-center" href="./landing_page.html">
+            <img src="logo.jpeg" alt="SkillConnect Logo"/>
+        </a>
+
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="./landing_page.html">Home (Go to Main Site)</a></li>
+                <li class="nav-item"><a class="nav-link" href="./admin_dashboard.html">Admin Dashboard</a></li> 
+                <li class="nav-item"><a class="nav-link" href="./user_management.html">User Management</a></li>
+                <li class="nav-item"><a class="nav-link" href="./courses_page_admin.html">Courses</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">All Jobs</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Services
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Tutoring</a></li>
+                        <li><a class="dropdown-item" href="#">Job Matching</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="./faq.html">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="./aboutUs.html">About Us</a></li>
+            </ul>
+
+            <div class="d-flex align-items-center nav-icons">
+                <span class="me-3 fw-bold">Admin User</span>
+                <i class="bi bi-person-circle fs-4 me-3"></i>
+                <div class="nav-buttons">
+                    <a href="../login.html" id="logout-btn" class="btn btn-outline-primary">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="d-flex">
+    <div class="admin-sidebar col-md-2">
+   <ul class="nav flex-column">
+    <li class="nav-item"><a class="nav-link" href="./admin_dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" href="./user_management.html"><i class="bi bi-people"></i> Manage Students </a></li>
+    <li class="nav-item"><a class="nav-link" href="./courses_page_admin.html"><i class="bi bi-book"></i>Manage Courses</a></li>
+    <li class="nav-item"><a class="nav-link active" href="./tutor_management.html"><i class="bi bi-calendar-check"></i>Manage Tutoring Sessions</a></li>
+    <li class="nav-item"><a class="nav-link" href="job_listing_management.html" data-target="active-listings-content"><i class="bi bi-briefcase"></i>Manage Job Listings</a></li>
+    <li class="nav-item"><a class="nav-link" href="applications_admin.html"><i class="bi bi-file-earmark-text"></i> Manage JobSeekers</a></li>
+    <li class="nav-item"><a class="nav-link" href="reports_admin.html" data-target="reports-content"><i class="bi bi-graph-up"></i> Manage Employers</a></li>
+    <li class="nav-item"><a class="nav-link" href="admin_messages.html" data-target="messages-content"><i class="bi bi-chat-dots"></i> Manage Complaints</a></li>
+    <li class="nav-item"><a class="nav-link" href="system_settings_admin.html"><i class="bi bi-box-seam"></i> System Settings</a></li>
+</ul>
+    </div>
+
+    <div class="offcanvas offcanvas-start admin-sidebar" tabindex="-1" id="adminSidebarOffcanvas" aria-labelledby="adminSidebarOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title text-white" id="adminSidebarOffcanvasLabel">Admin Navigation</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+      <ul class="nav flex-column">
+    <li class="nav-item"><a class="nav-link" href="./admin_dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" href="./user_management.html"><i class="bi bi-people"></i> Manage Students </a></li>
+    <li class="nav-item"><a class="nav-link" href="./courses_page_admin.html"><i class="bi bi-book"></i>Manage Courses</a></li>
+    <li class="nav-item"><a class="nav-link active" href="./tutor_management.html"><i class="bi bi-calendar-check"></i>Manage Tutoring Sessions</a></li>
+    <li class="nav-item"><a class="nav-link" href="job_listing_management.html" data-target="active-listings-content"><i class="bi bi-briefcase"></i>Manage Job Listings</a></li>
+    <li class="nav-item"><a class="nav-link" href="applications_admin.html"><i class="bi bi-file-earmark-text"></i> Manage JobSeekers</a></li>
+    <li class="nav-item"><a class="nav-link" href="reports_admin.html" data-target="reports-content"><i class="bi bi-graph-up"></i> Manage Employers</a></li>
+    <li class="nav-item"><a class="nav-link" href="admin_messages.html" data-target="messages-content"><i class="bi bi-chat-dots"></i> Manage Complaints</a></li>
+    <li class="nav-item"><a class="nav-link" href="system_settings_admin.html"><i class="bi bi-box-seam"></i> System Settings</a></li>
+</ul>
+        </div>
+    </div>
+
+    <div class="admin-content col-md-10">
+        <h1 class="mb-4 fw-bold text-primary">Tutoring & Tutor Management</h1>
+
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" data-target="upcoming-sessions-content">Upcoming Sessions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-target="completed-sessions-content">Completed Sessions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-target="all-tutors-content">All Tutors</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-target="pending-tutors-content">Pending Tutor Approvals</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-target="flagged-tutors-content">Flagged Tutors</a>
+            </li>
+        </ul>
+
+        <!-- Upcoming Sessions Content -->
+        <div id="upcoming-sessions-content" class="sub-content-section active">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">Upcoming Sessions</h4>
+                <div class="input-group mb-3">
+                    <input type="text" id="session-search-input-upcoming" class="form-control" placeholder="Search by Tutor, Student, or Subject...">
+                    <button class="btn btn-outline-primary search-btn" type="button" data-table="upcoming-sessions-table"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Tutor</th>
+                                <th scope="col">Student</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="upcoming-sessions-table">
+                            <!-- Data will be loaded dynamically -->
+                        </tbody>
+                    </table>
+                    <p class="text-muted small mt-3" id="no-upcoming-sessions-message" style="display: none;">No upcoming sessions found.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Completed Sessions Content -->
+        <div id="completed-sessions-content" class="sub-content-section">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">Completed Sessions</h4>
+                <div class="input-group mb-3">
+                    <input type="text" id="session-search-input-completed" class="form-control" placeholder="Search by Tutor, Student, or Subject...">
+                    <button class="btn btn-outline-primary search-btn" type="button" data-table="completed-sessions-table"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Tutor</th>
+                                <th scope="col">Student</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="completed-sessions-table">
+                            <!-- Data will be loaded dynamically -->
+                        </tbody>
+                    </table>
+                    <p class="text-muted small mt-3" id="no-completed-sessions-message" style="display: none;">No completed sessions found.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Tutors Content -->
+        <div id="all-tutors-content" class="sub-content-section">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">All Registered Tutors</h4>
+                <div class="input-group mb-3">
+                    <input type="text" id="tutor-search-input-all" class="form-control" placeholder="Search tutors by name or email...">
+                    <button class="btn btn-outline-primary search-btn" type="button" data-table="all-tutors-table"><i class="bi bi-search"></i> Search</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Approved</th>
+                                <th scope="col">Registered On</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-tutors-table">
+                            <!-- Tutor rows will be dynamically loaded here by JavaScript -->
+                        </tbody>
+                    </table>
+                    <p class="text-muted small mt-3" id="no-all-tutors-message" style="display: none;">No registered tutors found.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Tutor Approvals Content -->
+        <div id="pending-tutors-content" class="sub-content-section">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">Pending Tutor Approvals</h4>
+                <p class="text-muted">Review and approve new tutor registrations.</p>
+                <div class="input-group mb-3">
+                    <input type="text" id="tutor-search-input-pending" class="form-control" placeholder="Search pending tutors by name or email...">
+                    <button class="btn btn-outline-primary search-btn" type="button" data-table="pending-tutors-table"><i class="bi bi-search"></i> Search</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Registered On</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pending-tutors-table">
+                            <!-- Pending tutor rows will be dynamically loaded here by JavaScript -->
+                        </tbody>
+                    </table>
+                    <p class="text-muted small mt-3" id="no-pending-tutors-message" style="display: none;">No pending tutor approvals at this time.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flagged Tutors Content -->
+        <div id="flagged-tutors-content" class="sub-content-section">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">Flagged Tutors for Review</h4>
+                <p class="text-muted">Tutors reported for policy violations, suspicious activity, or other issues.</p>
+                <div class="input-group mb-3">
+                    <input type="text" id="tutor-search-input-flagged" class="form-control" placeholder="Search flagged tutors by name or email...">
+                    <button class="btn btn-outline-primary search-btn" type="button" data-table="flagged-tutors-table"><i class="bi bi-search"></i> Search</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Reason for Flag</th>
+                                <th scope="col">Date Flagged</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="flagged-tutors-table">
+                            <!-- Flagged tutor rows will be dynamically loaded here by JavaScript -->
+                        </tbody>
+                    </table>
+                    <p class="text-muted small mt-3" id="no-flagged-tutors-message" style="display: none;">No flagged tutors requiring immediate attention.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer class="bg-dark text-white pt-5 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <a class="navbar-brand d-flex align-items-center mb-3" href="./landing_page.html">
+                    <img src="logo.jpeg" alt="SkillConnect Logo" height="60">
+                </a>
+                <p class="text-muted">Temporary minds. Share skills. Shape the future – with skillConnect.</p>
+                <p class="text-muted small">© 2025 SkillConnect. All rights reserved.</p>
+                <p class="text-muted small mb-0">Group B</p>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-4">
+                <h5 class="text-uppercase fw-bold mb-4">All Pages</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Home</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">All Courses</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Contact</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">About Us</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-4 mb-4">
+                <h5 class="text-uppercase fw-bold mb-4">Policies</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Terms and Conditions</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Refund and Returns Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-4 mb-4">
+                <h5 class="text-uppercase fw-bold mb-4">Stay Updated</h5>
+                <div class="input-group mb-3">
+                    <input type="email" id="newsletter-email" class="form-control" placeholder="Your Email">
+                    <button class="btn btn-primary" type="button" id="subscribe-btn">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Modals for Tutor Management -->
+
+<!-- Delete Tutor Confirmation Modal -->
+<div class="modal fade" id="deleteTutorConfirmationModal" tabindex="-1" aria-labelledby="deleteTutorConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteTutorConfirmationModalLabel">Confirm Tutor Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to permanently delete tutor <strong id="deleteTutorName"></strong> (<span id="deleteTutorEmail"></span>)? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteTutorBtn">Delete Tutor</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ban Tutor Confirmation Modal -->
+<div class="modal fade" id="banTutorConfirmationModal" tabindex="-1" aria-labelledby="banTutorConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="banTutorConfirmationModalLabel">Confirm Tutor Ban</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to ban tutor <strong id="banTutorName"></strong> (<span id="banTutorEmail"></span>)? This will move the tutor to the flagged list.
+                <div class="mb-3 mt-3">
+                    <label for="banTutorReason" class="form-label">Reason for banning (optional):</label>
+                    <textarea class="form-control" id="banTutorReason" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-warning" id="confirmBanTutorBtn">Ban Tutor</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Unban Tutor Confirmation Modal -->
+<div class="modal fade" id="unbanTutorConfirmationModal" tabindex="-1" aria-labelledby="unbanTutorConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unbanTutorConfirmationModalLabel">Confirm Tutor Unban</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to unban tutor <strong id="unbanTutorName"></strong> (<span id="unbanTutorEmail"></span>)? This will remove them from the flagged list. They will need to re-apply to become an active tutor.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirmUnbanTutorBtn">Unban Tutor</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Tutor Modal -->
+<div class="modal fade" id="editTutorModal" tabindex="-1" aria-labelledby="editTutorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTutorModalLabel">Edit Tutor Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editTutorForm">
+                    <input type="hidden" id="edit-tutor-id" name="id">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit-tutor-name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="edit-tutor-name" name="name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="edit-tutor-username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="edit-tutor-username" name="username" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit-tutor-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="edit-tutor-email" name="email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="edit-tutor-phone-number" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" id="edit-tutor-phone-number" name="phone_number" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-tutor-cnic" class="form-label">CNIC</label>
+                        <input type="text" class="form-control" id="edit-tutor-cnic" name="cnic" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-tutor-bio" class="form-label">Bio</label>
+                        <textarea class="form-control" id="edit-tutor-bio" name="bio" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-tutor-fee-type" class="form-label">Fee Type</label>
+                        <select class="form-select" id="edit-tutor-fee-type" name="fee_type" required>
+                            <option value="monthly">Monthly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="hourly">Hourly</option>
+                            <option value="student_based">Student-Based</option>
+                        </select>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="edit-tutor-is-approved" name="is_approved">
+                        <label class="form-check-label" for="edit-tutor-is-approved">
+                            Is Approved
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="editTutorForm">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Tutor Details Modal -->
+<div class="modal fade" id="viewTutorModal" tabindex="-1" aria-labelledby="viewTutorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewTutorModalLabel">Tutor Profile Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <dl class="row">
+                        <dt class="col-sm-4">Tutor ID:</dt>
+                        <dd class="col-sm-8" id="view-tutor-id"></dd>
+
+                        <dt class="col-sm-4">Full Name:</dt>
+                        <dd class="col-sm-8" id="view-tutor-name"></dd>
+
+                        <dt class="col-sm-4">Username:</dt>
+                        <dd class="col-sm-8" id="view-tutor-username"></dd>
+
+                        <dt class="col-sm-4">Email:</dt>
+                        <dd class="col-sm-8" id="view-tutor-email"></dd>
+
+                        <dt class="col-sm-4">Phone Number:</dt>
+                        <dd class="col-sm-8" id="view-tutor-phone-number"></dd>
+
+                        <dt class="col-sm-4">CNIC:</dt>
+                        <dd class="col-sm-8" id="view-tutor-cnic"></dd>
+
+                        <dt class="col-sm-4">Bio:</dt>
+                        <dd class="col-sm-8" id="view-tutor-bio"></dd>
+
+                        <dt class="col-sm-4">Fee Type:</dt>
+                        <dd class="col-sm-8" id="view-tutor-fee-type"></dd>
+
+                        <dt class="col-sm-4">Is Approved:</dt>
+                        <dd class="col-sm-8" id="view-tutor-is-approved"></dd>
+
+                        <dt class="col-sm-4">Approved At:</dt>
+                        <dd class="col-sm-8" id="view-tutor-approved-at"></dd>
+
+                        <dt class="col-sm-4">Registered On:</dt>
+                        <dd class="col-sm-8" id="view-tutor-created-at"></dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- DOM Element Selections ---
+    const mainTabs = document.querySelectorAll('.nav-tabs .nav-link');
+    const contentSections = document.querySelectorAll('.admin-content .sub-content-section');
+    
+    // Table bodies for sessions
+    const upcomingSessionsTableBody = document.getElementById('upcoming-sessions-table');
+    const completedSessionsTableBody = document.getElementById('completed-sessions-table');
+
+    // Table bodies for tutors
+    const allTutorsTableBody = document.getElementById('all-tutors-table');
+    const pendingTutorsTableBody = document.getElementById('pending-tutors-table');
+    const flaggedTutorsTableBody = document.getElementById('flagged-tutors-table');
+
+    // Messages for empty tables
+    const noUpcomingSessionsMessage = document.getElementById('no-upcoming-sessions-message');
+    const noCompletedSessionsMessage = document.getElementById('no-completed-sessions-message');
+    const noAllTutorsMessage = document.getElementById('no-all-tutors-message');
+    const noPendingTutorsMessage = document.getElementById('no-pending-tutors-message');
+    const noFlaggedTutorsMessage = document.getElementById('no-flagged-tutors-message');
+
+    // Search inputs
+    const sessionSearchInputUpcoming = document.getElementById('session-search-input-upcoming');
+    const sessionSearchInputCompleted = document.getElementById('session-search-input-completed');
+    const tutorSearchInputAll = document.getElementById('tutor-search-input-all');
+    const tutorSearchInputPending = document.getElementById('tutor-search-input-pending');
+    const tutorSearchInputFlagged = document.getElementById('tutor-search-input-flagged');
+
+    // Initialize Bootstrap Modals
+    const deleteTutorConfirmationModal = new bootstrap.Modal(document.getElementById('deleteTutorConfirmationModal'));
+    const banTutorConfirmationModal = new bootstrap.Modal(document.getElementById('banTutorConfirmationModal'));
+    const unbanTutorConfirmationModal = new bootstrap.Modal(document.getElementById('unbanTutorConfirmationModal'));
+    const editTutorModal = new bootstrap.Modal(document.getElementById('editTutorModal'));
+    const viewTutorModal = new bootstrap.Modal(document.getElementById('viewTutorModal'));
+    
+    // Variables to store the ID of the tutor currently being processed for confirmation
+    let currentTutorIdToDelete = null;
+    let currentTutorIdToBan = null;
+    let currentBannedTutorIdToUnban = null; 
+
+    // Store fetched data globally for filtering/re-rendering without re-fetching
+    let allTutorsData = [];
+    let bannedTutorsData = [];
+    let allSessionsData = []; // Will store both upcoming and completed, then filter
+
+
+    // --- General Tab & Content Switching ---
+    /**
+     * Toggles the visibility of content sections based on the target ID.
+     * Also updates the 'active' class on the corresponding navigation tabs.
+     * @param {string} targetId - The ID of the content section to display.
+     */
+    function showContent(targetId) {
+        contentSections.forEach(section => {
+            section.classList.remove('active');
+        });
+        const targetContent = document.getElementById(targetId);
+        if (targetContent) {
+            targetContent.classList.add('active');
+        }
+        
+        mainTabs.forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.target === targetId);
+        });
+    }
+
+    // Event listener for all main navigation tabs
+    mainTabs.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            const targetId = this.dataset.target;
+            showContent(targetId);
+            // Re-render all relevant tables based on current data and selected tab
+            renderUpcomingSessionsTable();
+            renderCompletedSessionsTable();
+            renderAllTutorsTable();
+            renderPendingTutorsTable();
+            renderFlaggedTutorsTable();
+        });
+    });
+
+    // --- Data Fetching ---
+    /**
+     * Fetches all tutoring session and tutor data from the backend in a single request.
+     */
+    async function fetchAllData() {
+        try {
+            const response = await fetch('get_tutoring_data.php'); 
+            const data = await response.json(); 
+
+            if (data.success) {
+                allTutorsData = data.tutors;
+                bannedTutorsData = data.banned_tutors;
+                allSessionsData = data.sessions; 
+                
+                // Render all tables after fetching data
+                renderUpcomingSessionsTable();
+                renderCompletedSessionsTable();
+                renderAllTutorsTable();
+                renderPendingTutorsTable();
+                renderFlaggedTutorsTable();
+
+            } else {
+                console.error('Error fetching all data:', data.message);
+                // Display error messages on all relevant tables
+                upcomingSessionsTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Failed to load sessions: ${data.message}</td></tr>`;
+                completedSessionsTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Failed to load sessions: ${data.message}</td></tr>`;
+                allTutorsTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Failed to load tutors: ${data.message}</td></tr>`;
+                pendingTutorsTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Failed to load pending tutors: ${data.message}</td></tr>`;
+                flaggedTutorsTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Failed to load flagged tutors: ${data.message}</td></tr>`;
+            }
+        } catch (error) {
+            console.error('Network error fetching all data:', error);
+            // Display network error messages on all relevant tables
+            upcomingSessionsTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Network error: Could not connect to the server.</td></tr>`;
+            completedSessionsTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Network error: Could not connect to the server.</td></tr>`;
+            allTutorsTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Network error: Could not connect to the server.</td></tr>`;
+            pendingTutorsTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Network error: Could not connect to the server.</td></tr>`;
+            flaggedTutorsTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Network error: Could not connect to the server.</td></tr>`;
+        }
+    }
+
+    // --- Table Rendering Functions ---
+
+    /**
+     * Renders the "Upcoming Sessions" table.
+     * @param {string} searchTerm - Optional search term for client-side filtering.
+     */
+    function renderUpcomingSessionsTable(searchTerm = '') {
+        upcomingSessionsTableBody.innerHTML = '';
+        noUpcomingSessionsMessage.style.display = 'none';
+        searchTerm = searchTerm.toLowerCase();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Normalize to start of today
+
+        const filteredSessions = allSessionsData.filter(session => {
+            const sessionDate = new Date(session.session_date);
+            // Check if the session is upcoming (date in future, or same date but time in future)
+            const isUpcoming = sessionDate > today || (sessionDate.toDateString() === today.toDateString() && session.session_time > new Date().toTimeString().slice(0,5));
+
+            const tutorName = (session.tutor_name || '').toLowerCase();
+            const studentName = (session.student_name || '').toLowerCase();
+            const subject = (session.subject || '').toLowerCase();
+            
+            return isUpcoming && (tutorName.includes(searchTerm) || studentName.includes(searchTerm) || subject.includes(searchTerm));
+        });
+
+        if (filteredSessions.length > 0) {
+            filteredSessions.forEach((session, index) => {
+                const statusBadge = `<span class="badge bg-${session.status === 'Confirmed' ? 'success' : 'info'}">${session.status}</span>`;
+                const [hours, minutes] = session.session_time.split(':');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                const formattedHours = ((hours % 12) || 12).toString().padStart(2, '0');
+                const formattedTime = `${formattedHours}:${minutes} ${ampm}`;
+
+                const row = `
+                    <tr>
+                        <td class="session-id">${session.session_id}</td>
+                        <td class="session-tutor">${session.tutor_name || 'N/A'}</td>
+                        <td class="session-student">${session.student_name || 'N/A'}</td>
+                        <td class="session-subject">${session.subject}</td>
+                        <td>${session.session_date}</td>
+                        <td>${formattedTime}</td>
+                        <td>${statusBadge}</td>
+                    </tr>
+                `;
+                upcomingSessionsTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            // No action listeners needed for sessions in this version as per request
+        } else {
+            noUpcomingSessionsMessage.style.display = 'block';
+        }
+    }
+
+    /**
+     * Renders the "Completed Sessions" table.
+     * @param {string} searchTerm - Optional search term for client-side filtering.
+     */
+    function renderCompletedSessionsTable(searchTerm = '') {
+        completedSessionsTableBody.innerHTML = '';
+        noCompletedSessionsMessage.style.display = 'none';
+        searchTerm = searchTerm.toLowerCase();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const filteredSessions = allSessionsData.filter(session => {
+            const sessionDate = new Date(session.session_date);
+            // Check if the session is completed (date in past, or same date but time in past, or explicitly marked 'Completed')
+            const isCompleted = session.status === 'Completed' || sessionDate < today || (sessionDate.toDateString() === today.toDateString() && session.session_time < new Date().toTimeString().slice(0,5));
+
+            const tutorName = (session.tutor_name || '').toLowerCase();
+            const studentName = (session.student_name || '').toLowerCase();
+            const subject = (session.subject || '').toLowerCase();
+            
+            return isCompleted && (tutorName.includes(searchTerm) || studentName.includes(searchTerm) || subject.includes(searchTerm));
+        });
+
+        if (filteredSessions.length > 0) {
+            filteredSessions.forEach((session, index) => {
+                const statusBadge = `<span class="badge bg-secondary">${session.status}</span>`;
+                const row = `
+                    <tr>
+                        <td>${session.session_id}</td>
+                        <td>${session.tutor_name || 'N/A'}</td>
+                        <td>${session.student_name || 'N/A'}</td>
+                        <td>${session.subject}</td>
+                        <td>${session.session_date}</td>
+                        <td>${statusBadge}</td>
+                    </tr>
+                `;
+                completedSessionsTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            // No action listeners needed for sessions in this version as per request
+        } else {
+            noCompletedSessionsMessage.style.display = 'block';
+        }
+    }
+
+
+    /**
+     * Renders the "All Registered Tutors" table.
+     * @param {string} searchTerm - Optional search term for client-side filtering.
+     */
+    function renderAllTutorsTable(searchTerm = '') {
+        allTutorsTableBody.innerHTML = '';
+        noAllTutorsMessage.style.display = 'none';
+        searchTerm = searchTerm.toLowerCase();
+
+        const filteredTutors = allTutorsData.filter(tutor => {
+            const name = (tutor.name || '').toLowerCase();
+            const email = (tutor.email || '').toLowerCase();
+            return name.includes(searchTerm) || email.includes(searchTerm);
+        });
+
+        if (filteredTutors.length > 0) {
+            filteredTutors.forEach((tutor, index) => {
+                const approvedBadge = tutor.is_approved == 1 ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-warning">No</span>';
+                const row = `
+                    <tr>
+                        <td>${tutor.id}</td>
+                        <td class="tutor-name">${tutor.name}</td>
+                        <td class="tutor-email">${tutor.email}</td>
+                        <td>${tutor.phone_number || 'N/A'}</td>
+                        <td>${approvedBadge}</td>
+                        <td>${new Date(tutor.created_at).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info me-1 action-btn edit-tutor" data-id="${tutor.id}" title="Edit Tutor"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-warning me-1 action-btn ban-tutor" data-id="${tutor.id}" data-name="${tutor.name}" data-email="${tutor.email}" title="Ban Tutor"><i class="bi bi-person-slash"></i> Ban</button>
+                            <button class="btn btn-sm btn-danger me-1 action-btn delete-tutor" data-id="${tutor.id}" data-name="${tutor.name}" data-email="${tutor.email}" title="Delete Tutor"><i class="bi bi-trash"></i> Delete</button>
+                            <button class="btn btn-sm btn-secondary action-btn view-tutor" data-id="${tutor.id}" title="View Profile"><i class="bi bi-eye"></i></button>
+                        </td>
+                    </tr>
+                `;
+                allTutorsTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            attachTutorActionListeners();
+        } else {
+            noAllTutorsMessage.style.display = 'block';
+        }
+    }
+
+    /**
+     * Renders the "Pending Tutor Approvals" table.
+     * @param {string} searchTerm - Optional search term for client-side filtering.
+     */
+    function renderPendingTutorsTable(searchTerm = '') {
+        pendingTutorsTableBody.innerHTML = '';
+        noPendingTutorsMessage.style.display = 'none';
+        searchTerm = searchTerm.toLowerCase();
+
+        const pendingTutors = allTutorsData.filter(tutor => {
+            const name = (tutor.name || '').toLowerCase();
+            const email = (tutor.email || '').toLowerCase();
+            return (tutor.is_approved == 0) && (name.includes(searchTerm) || email.includes(searchTerm));
+        });
+
+        if (pendingTutors.length > 0) {
+            pendingTutors.forEach((tutor, index) => {
+                const row = `
+                    <tr>
+                        <td>${tutor.id}</td>
+                        <td class="tutor-name">${tutor.name}</td>
+                        <td class="tutor-email">${tutor.email}</td>
+                        <td>${new Date(tutor.created_at).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1 action-btn approve-tutor" data-id="${tutor.id}" title="Approve Tutor"><i class="bi bi-check-lg"></i> Approve</button>
+                            <button class="btn btn-sm btn-danger me-1 action-btn delete-tutor" data-id="${tutor.id}" data-name="${tutor.name}" data-email="${tutor.email}" title="Reject Tutor"><i class="bi bi-x-lg"></i> Reject</button>
+                            <button class="btn btn-sm btn-secondary action-btn view-tutor" data-id="${tutor.id}" title="View Details"><i class="bi bi-eye"></i></button>
+                        </td>
+                    </tr>
+                `;
+                pendingTutorsTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            attachTutorActionListeners();
+        } else {
+            noPendingTutorsMessage.style.display = 'block';
+        }
+    }
+
+    /**
+     * Renders the "Flagged Tutors" table (banned tutors).
+     * @param {string} searchTerm - Optional search term for client-side filtering.
+     */
+    function renderFlaggedTutorsTable(searchTerm = '') {
+        flaggedTutorsTableBody.innerHTML = '';
+        noFlaggedTutorsMessage.style.display = 'none';
+        searchTerm = searchTerm.toLowerCase();
+
+        const filteredBannedTutors = bannedTutorsData.filter(bannedTutor => {
+            const name = (bannedTutor.name || '').toLowerCase();
+            const email = (bannedTutor.email || '').toLowerCase();
+            const reason = bannedTutor.reason_for_ban ? bannedTutor.reason_for_ban.toLowerCase() : '';
+            return name.includes(searchTerm) || email.includes(searchTerm) || reason.includes(searchTerm);
+        });
+
+        if (filteredBannedTutors.length > 0) {
+            filteredBannedTutors.forEach((bannedTutor, index) => {
+                const row = `
+                    <tr>
+                        <td>${bannedTutor.banned_id}</td>
+                        <td class="tutor-name">${bannedTutor.name}</td>
+                        <td class="tutor-email">${bannedTutor.email}</td>
+                        <td>${bannedTutor.reason_for_ban || 'N/A'}</td>
+                        <td>${new Date(bannedTutor.banned_at).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1 action-btn unban-tutor" data-id="${bannedTutor.banned_id}" data-name="${bannedTutor.name}" data-email="${bannedTutor.email}" title="Unban Tutor"><i class="bi bi-person-check"></i> Unban</button>
+                        </td>
+                    </tr>
+                `;
+                flaggedTutorsTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            attachTutorActionListeners();
+        } else {
+            noFlaggedTutorsMessage.style.display = 'block';
+        }
+    }
+
+    // --- Action Button Event Listeners ---
+
+    /**
+     * Attaches click event listeners to the action buttons for tutors.
+     * This function is called after tables are populated to ensure new buttons have listeners.
+     */
+    function attachTutorActionListeners() {
+        // Clear existing listeners to prevent duplicates
+        document.querySelectorAll('.delete-tutor').forEach(button => button.onclick = null);
+        document.querySelectorAll('.ban-tutor').forEach(button => button.onclick = null);
+        document.querySelectorAll('.unban-tutor').forEach(button => button.onclick = null);
+        document.querySelectorAll('.edit-tutor').forEach(button => button.onclick = null);
+        document.querySelectorAll('.view-tutor').forEach(button => button.onclick = null);
+        document.querySelectorAll('.approve-tutor').forEach(button => button.onclick = null);
+
+        // Listener for "Delete Tutor" buttons
+        document.querySelectorAll('.delete-tutor').forEach(button => {
+            button.onclick = function() {
+                currentTutorIdToDelete = this.dataset.id;
+                document.getElementById('deleteTutorName').textContent = this.dataset.name;
+                document.getElementById('deleteTutorEmail').textContent = this.dataset.email;
+                deleteTutorConfirmationModal.show(); 
+            };
+        });
+
+        // Listener for "Ban Tutor" buttons
+        document.querySelectorAll('.ban-tutor').forEach(button => {
+            button.onclick = function() {
+                currentTutorIdToBan = this.dataset.id;
+                document.getElementById('banTutorName').textContent = this.dataset.name;
+                document.getElementById('banTutorEmail').textContent = this.dataset.email;
+                document.getElementById('banTutorReason').value = ''; 
+                banTutorConfirmationModal.show(); 
+            };
+        });
+
+        // Listener for "Unban Tutor" buttons
+        document.querySelectorAll('.unban-tutor').forEach(button => {
+            button.onclick = function() {
+                currentBannedTutorIdToUnban = this.dataset.id; // This is banned_id from banned_tutors table
+                document.getElementById('unbanTutorName').textContent = this.dataset.name;
+                document.getElementById('unbanTutorEmail').textContent = this.dataset.email;
+                unbanTutorConfirmationModal.show();
+            };
+        });
+
+        // Listener for "Edit Tutor" buttons
+        document.querySelectorAll('.edit-tutor').forEach(button => {
+            button.onclick = function() {
+                const tutorId = this.dataset.id;
+                openEditTutorModal(tutorId); 
+            };
+        });
+
+        // Listener for "View Profile" buttons
+        document.querySelectorAll('.view-tutor').forEach(button => {
+            button.onclick = function() {
+                const tutorId = this.dataset.id;
+                openViewTutorModal(tutorId); 
+            };
+        });
+
+        // Listener for "Approve Tutor" buttons
+        document.querySelectorAll('.approve-tutor').forEach(button => {
+            button.onclick = async function() {
+                const tutorId = this.dataset.id;
+                const confirmApprove = confirm('Are you sure you want to approve this tutor?'); 
+                if (confirmApprove) {
+                    await sendTutorAction('approve', tutorId);
+                }
+            };
+        });
+    }
+
+    // --- PHP Interaction Functions (Tutors) ---
+
+    /**
+     * Sends a tutor action (delete, ban, approve, unban, update) to the backend.
+     * @param {string} actionType - The type of action (e.g., 'delete', 'ban', 'approve', 'unban', 'update').
+     * @param {string} id - The ID of the entity (tutor_id or banned_id) to perform the action on.
+     * @param {object} additionalData - Optional additional data for the action (e.g., reason for ban, form data).
+     */
+    async function sendTutorAction(actionType, id, additionalData = {}) {
+        const formData = new FormData();
+        formData.append('action', actionType);
+        
+        // Use 'id' for tutor table actions, 'banned_id' for banned_tutors table actions
+        if (actionType === 'unban') {
+             formData.append('banned_id', id);
+        } else {
+             formData.append('tutor_id', id); // For delete, ban, approve, update
+        }
+
+        for (const key in additionalData) {
+            formData.append(key, additionalData[key]);
+        }
+
+        try {
+            const response = await fetch('tutor_crud_actions.php', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                alert(data.message);
+                fetchAllData(); // Reload all data after any action
+            } else {
+                alert('Error: ' + data.message);
+                console.error('Action error:', data.message);
+            }
+        } catch (error) {
+            alert('Network error during action: ' + error.message);
+            console.error('Network error:', error);
+        }
+    }
+
+    /**
+     * Opens the Edit Tutor modal and populates it with the tutor's current data.
+     * @param {string} tutorId - The ID of the tutor to edit.
+     */
+    async function openEditTutorModal(tutorId) {
+        try {
+            // Fetch full tutor details from the backend using the dedicated script
+            const response = await fetch(`get_tutor_full_details.php?tutor_id=${tutorId}`);
+            const data = await response.json();
+
+            if (data.success && data.tutor) {
+                const tutor = data.tutor;
+                // Populate the form fields in the edit modal
+                document.getElementById('edit-tutor-id').value = tutor.id;
+                document.getElementById('edit-tutor-name').value = tutor.name;
+                document.getElementById('edit-tutor-username').value = tutor.username;
+                document.getElementById('edit-tutor-email').value = tutor.email;
+                document.getElementById('edit-tutor-phone-number').value = tutor.phone_number || '';
+                document.getElementById('edit-tutor-cnic').value = tutor.cnic || '';
+                document.getElementById('edit-tutor-bio').value = tutor.bio || '';
+                document.getElementById('edit-tutor-fee-type').value = tutor.fee_type;
+                document.getElementById('edit-tutor-is-approved').checked = (tutor.is_approved == 1); 
+
+                editTutorModal.show(); // Show the edit modal
+            } else {
+                alert('Error fetching tutor details: ' + data.message);
+                console.error('Error fetching tutor details:', data.message);
+            }
+        } catch (error) {
+            alert('Network error fetching tutor details: ' + error.message);
+            console.error('Network error fetching tutor details:', error);
+        }
+    }
+
+    /**
+     * Opens the View Tutor Details modal and populates it with the tutor's full data.
+     * @param {string} tutorId - The ID of the tutor to view.
+     */
+    async function openViewTutorModal(tutorId) {
+        try {
+            // Fetch full tutor details from the backend using the dedicated script
+            const response = await fetch(`get_tutor_full_details.php?tutor_id=${tutorId}`);
+            const data = await response.json();
+
+            if (data.success && data.tutor) {
+                const tutor = data.tutor;
+                // Populate the display fields in the view modal
+                document.getElementById('view-tutor-id').textContent = tutor.id;
+                document.getElementById('view-tutor-name').textContent = tutor.name;
+                document.getElementById('view-tutor-username').textContent = tutor.username;
+                document.getElementById('view-tutor-email').textContent = tutor.email;
+                document.getElementById('view-tutor-phone-number').textContent = tutor.phone_number || 'N/A';
+                document.getElementById('view-tutor-cnic').textContent = tutor.cnic || 'N/A';
+                document.getElementById('view-tutor-bio').textContent = tutor.bio || 'N/A';
+                document.getElementById('view-tutor-fee-type').textContent = tutor.fee_type || 'N/A';
+                document.getElementById('view-tutor-is-approved').textContent = tutor.is_approved == 1 ? 'Yes' : 'No';
+                document.getElementById('view-tutor-approved-at').textContent = tutor.approved_at ? new Date(tutor.approved_at).toLocaleString() : 'N/A';
+                document.getElementById('view-tutor-created-at').textContent = new Date(tutor.created_at).toLocaleString();
+
+                viewTutorModal.show(); // Show the view modal
+            } else {
+                alert('Error fetching tutor details for view: ' + data.message);
+                console.error('Error fetching tutor details for view:', data.message);
+            }
+        } catch (error) {
+            alert('Network error fetching tutor details for view: ' + error.message);
+            console.error('Network error fetching tutor details for view:', error);
+        }
+    }
+
+    // --- Modal Confirmation and Form Submission Handlers ---
+
+    // Edit Tutor Form Submission
+    document.getElementById('editTutorForm').addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+
+        const formData = new FormData(this);
+        // Ensure is_approved checkbox sends correct value (1 or 0)
+        formData.set('is_approved', document.getElementById('edit-tutor-is-approved').checked ? '1' : '0');
+
+        await sendTutorAction('update', formData.get('id'), Object.fromEntries(formData));
+        editTutorModal.hide(); 
+    });
+
+    // Confirm Delete Tutor Button
+    document.getElementById('confirmDeleteTutorBtn').addEventListener('click', async function() {
+        if (currentTutorIdToDelete) {
+            await sendTutorAction('delete', currentTutorIdToDelete);
+            deleteTutorConfirmationModal.hide();
+            currentTutorIdToDelete = null;
+        }
+    });
+
+    // Confirm Ban Tutor Button
+    document.getElementById('confirmBanTutorBtn').addEventListener('click', async function() {
+        if (currentTutorIdToBan) {
+            const banReason = document.getElementById('banTutorReason').value; 
+            await sendTutorAction('ban', currentTutorIdToBan, { reason: banReason });
+            banTutorConfirmationModal.hide();
+            currentTutorIdToBan = null;
+        }
+    });
+
+    // Confirm Unban Tutor Button
+    document.getElementById('confirmUnbanTutorBtn').addEventListener('click', async function() {
+        if (currentBannedTutorIdToUnban) {
+            await sendTutorAction('unban', currentBannedTutorIdToUnban);
+            unbanTutorConfirmationModal.hide();
+            currentBannedTutorIdToUnban = null;
+        }
+    });
+
+    // --- Session Search Functionality ---
+    document.querySelectorAll('.search-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const tableId = this.dataset.table;
+            let searchTerm = '';
+            if (tableId === 'upcoming-sessions-table') {
+                searchTerm = sessionSearchInputUpcoming.value;
+                renderUpcomingSessionsTable(searchTerm);
+            } else if (tableId === 'completed-sessions-table') {
+                searchTerm = sessionSearchInputCompleted.value;
+                renderCompletedSessionsTable(searchTerm);
+            } else if (tableId === 'all-tutors-table') {
+                searchTerm = tutorSearchInputAll.value;
+                renderAllTutorsTable(searchTerm);
+            } else if (tableId === 'pending-tutors-table') {
+                searchTerm = tutorSearchInputPending.value;
+                renderPendingTutorsTable(searchTerm);
+            } else if (tableId === 'flagged-tutors-table') {
+                searchTerm = tutorSearchInputFlagged.value;
+                renderFlaggedTutorsTable(searchTerm);
+            }
+        });
+    });
+
+    // --- Footer & Logout Buttons (Existing functionality) ---
+    document.getElementById('subscribe-btn').addEventListener('click', function() {
+        const emailInput = document.getElementById('newsletter-email');
+        if (emailInput.value && emailInput.value.includes('@')) {
+            alert(`Thank you for subscribing with ${emailInput.value}!`);
+            emailInput.value = '';
+        } else {
+            alert('Please enter a valid email address.');
+        }
+    });
+    
+    document.getElementById('logout-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('Are you sure you want to logout?')) {
+            window.location.href = '../login.html'; // Redirect to login page
+        }
+    });
+
+    // --- Initial Load ---
+    fetchAllData(); // Fetch all data on page load
+    showContent('upcoming-sessions-content'); // Show initial tab
+});
+</script>
+</body>
+</html>

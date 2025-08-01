@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SkillConnect Admin - User Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
+    <style>
+        /* General styling for smooth transitions and body background */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            transition: background 0.3s, color 0.3s;
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            padding: 1rem 2rem;
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 600;
+            margin: 0 10px;
+        }
+
+        .nav-icons i {
+            font-size: 1.3rem;
+            margin-right: 15px;
+            color: #1e1e2f;
+            cursor: pointer;
+        }
+
+        .nav-buttons .btn {
+            margin-left: 10px;
+        }
+
+        .navbar-brand img {
+            height: 80px; /* Adjust logo height */
+        }
+
+        /* Admin sidebar styling */
+        .admin-sidebar {
+            background: linear-gradient(to bottom, #220359, #4906bf); /* Gradient background for sidebar */
+            color: white;
+            padding-top: 20px;
+            min-height: calc(100vh - 80px); /* Adjust height relative to navbar */
+            position: sticky; /* Sticky sidebar */
+            top: 0;
+            left: 0;
+            z-index: 1000; 
+        }
+
+        .admin-sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8); /* Lighter text for non-active links */
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1); /* Hover and active background */
+            color: white;
+            border-left: 3px solid #ffc107; /* Highlight for active link */
+        }
+
+        .admin-sidebar .nav-link i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Main content area styling */
+        .admin-content {
+            padding: 30px;
+            background-color: #f8f9fa;
+            flex-grow: 1;
+        }
+
+        .admin-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Soft shadow for cards */
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        /* Custom button and text colors to match primary theme */
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+
+        .btn-outline-primary {
+            color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .btn-outline-primary:hover {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .text-primary {
+            color: #0d6efd !important;
+        }
+
+        .bg-primary {
+            background-color: #0d6efd !important;
+        }
+        
+        .highlight {
+            background-color: #ffc107;
+            color: #000;
+            padding: 0 6px;
+            border-radius: 4px;
+        }
+
+        /* Badge colors */
+        .badge.bg-success { background-color: #198754 !important; }
+        .badge.bg-danger { background-color: #dc3545 !important; }
+        .badge.bg-info { background-color: #0dcaf0 !important; }
+        .badge.bg-warning { background-color: #ffc107 !important; }
+        .badge.bg-purple { background-color: #6f42c1 !important; }
+
+        /* Footer styling */
+        footer {
+            background-color: #212529 !important;
+            color: white;
+        }
+
+        footer .text-muted {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        footer .text-white {
+            color: white !important;
+        }
+
+        footer .text-white:hover {
+            color: #ffc107 !important;
+        }
+
+        /* Remove all transitions for offcanvas */
+        .offcanvas {
+            transition: none !important;
+        }
+
+        /* Responsive adjustments for mobile devices */
+        @media (max-width: 767.98px) {
+            .admin-sidebar {
+                display: none; /* Hide static sidebar on small screens */
+            }
+            .offcanvas-start {
+                width: 250px; /* Width of offcanvas sidebar */
+            }
+            .admin-content {
+                width: 100%; /* Full width content on small screens */
+            }
+            .navbar-toggler {
+                display: block; /* Show toggler button */
+            }
+        }
+
+        /* Responsive adjustments for larger screens */
+        @media (min-width: 768px) {
+            .navbar-toggler {
+                display: none; /* Hide toggler button */
+            }
+            .admin-sidebar {
+                display: block !important; /* Show static sidebar */
+            }
+            .offcanvas {
+                visibility: hidden; /* Hide offcanvas when static sidebar is visible */
+            }
+            .offcanvas.show {
+                transform: translateX(-100%); /* Ensure offcanvas is off-screen when hidden */
+            }
+        }
+
+        /* Content section display control */
+        .sub-content-section {
+            display: none; /* Hide all sub-content sections by default */
+        }
+        .sub-content-section.active {
+            display: block; /* Show active sub-content section */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm">
+    <div class="container-fluid">
+        <!-- Navbar Toggler for Offcanvas Sidebar (Mobile) -->
+        <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebarOffcanvas" aria-controls="adminSidebarOffcanvas" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Brand Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="./landing_page.html">
+            <img src="logo.jpeg" alt="SkillConnect Logo"/> <!-- Placeholder for logo.jpeg -->
+        </a>
+
+        <!-- Navbar Menu -->
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="./landing_page.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="./admin_dashboard.html">Admin Dashboard</a></li> 
+                <li class="nav-item"><a class="nav-link" href="#">All Jobs</a></li>
+                <li class="nav-item"><a class="nav-link" href="./courses_page.html">All Courses</a></li> 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Services
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="./registration_form_students_tutor.html">Tutoring</a></li>
+                        <li><a class="dropdown-item" href="./registration_form_jobSeekers_Employeers.html">Job Matching</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="./faq.html">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="./aboutUs.html">About Us</a></li>
+            </ul>
+
+            <!-- Navbar Icons and Buttons (Admin User Info & Logout) -->
+            <div class="d-flex align-items-center nav-icons">
+                <span class="me-3 fw-bold">Admin User</span>
+                <i class="bi bi-person-circle fs-4 me-3"></i>
+                <div class="nav-buttons">
+                    <a href="../login.html" class="btn btn-outline-primary" id="logout-btn">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content Area with Sidebar -->
+<div class="d-flex">
+    <!-- Static Admin Sidebar (visible on larger screens) -->
+    <div class="admin-sidebar col-md-2">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="admin_dashboard.html">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="user_management.html">
+                    <i class="bi bi-people"></i> Manage Students 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="courses_page_admin.html">
+                    <i class="bi bi-book"></i> Manage Courses 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="tutor_management.html">
+                    <i class="bi bi-calendar-check"></i>Manage Tutoring Sessions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="job_listing_management.html">
+                    <i class="bi bi-briefcase"></i>Manage Job Listings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="applications_admin.html">
+                    <i class="bi bi-file-earmark-text"></i> Manage JobSeekers
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="admin_messages.html">
+                    <i class="bi bi-chat-dots"></i> Manage Complaints
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="system_settings_admin.html">
+                    <i class="bi bi-box-seam"></i> System Settings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="reports_admin.html">
+                    <i class="bi bi-graph-up"></i> Manage Employers
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Offcanvas Admin Sidebar (for mobile) -->
+    <div class="offcanvas offcanvas-start admin-sidebar" tabindex="-1" id="adminSidebarOffcanvas" aria-labelledby="adminSidebarOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title text-white" id="adminSidebarOffcanvasLabel">Admin Navigation</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_dashboard.html">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="user_management.html" data-target="user-list-content">
+                        <i class="bi bi-people"></i> Users
+                    </a>
+                </li>
+            
+                <li class="nav-item">
+                    <a class="nav-link" href="./courses_page_admin.html"> <i class="bi bi-book"></i> Courses
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="tutor_management.html" data-target="tutoring-sessions-content">
+                        <i class="bi bi-calendar-check"></i> Tutoring Sessions
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="job_listing_management.html" data-target="job-listings-content">
+                        <i class="bi bi-briefcase"></i> Job Listings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="applications_admin.html" data-target="applications-content">
+                        <i class="bi bi-file-earmark-text"></i> Applications
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin_messages.html" data-target="messages-content">
+                        <i class="bi bi-chat-dots"></i> Messages
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="system_settings_admin.html" data-target="system-settings-content">
+                        <i class="bi bi-box-seam"></i> System Settings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="reports_admin.html" data-target="reports-content">
+                        <i class="bi bi-graph-up"></i> Reports
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="admin-content col-md-10">
+        <h1 class="mb-4 fw-bold text-primary">User Management</h1>
+
+        <!-- User Management Tabs -->
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" data-target="user-list-content">All Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-target="pending-approvals-content">Pending Approvals</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-target="flagged-users-content">Flagged Users</a>
+            </li>
+        </ul>
+
+        <!-- All Registered Users Section -->
+        <div id="user-list-content" class="sub-content-section active">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">All Registered Users</h4>
+                <div class="input-group mb-3">
+                    <input type="text" id="user-search-input-all" class="form-control" placeholder="Search users by name or email...">
+                    <button class="btn btn-outline-primary search-btn" type="button" data-table="all-users-table"><i class="bi bi-search"></i> Search</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Approved</th>
+                                <th scope="col">Registered On</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-users-table">
+                            <!-- User rows will be dynamically loaded here by JavaScript -->
+                        </tbody>
+                    </table>
+                    <p class="text-muted small mt-3" id="no-all-users-message" style="display: none;">No registered users found.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Approvals Section -->
+        <div id="pending-approvals-content" class="sub-content-section">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">New User Approvals</h4>
+                <p class="text-muted">Review and approve new user registrations, especially for roles requiring verification (e.g., Tutors, Employers).</p>
+                <div class="input-group mb-3">
+                    <input type="text" id="user-search-input-pending" class="form-control" placeholder="Search pending users by name or email...">
+                    <button class="btn btn-outline-primary search-btn" type="button" data-table="pending-approvals-table"><i class="bi bi-search"></i> Search</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Registered On</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pending-approvals-table">
+                            <!-- Pending user rows will be dynamically loaded here by JavaScript -->
+                        </tbody>
+                    </table>
+                    <p class="text-muted small mt-3" id="no-pending-users-message" style="display: none;">No pending user approvals at this time.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flagged Users Section -->
+        <div id="flagged-users-content" class="sub-content-section">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">Flagged Users for Review</h4>
+                <p class="text-muted">Users reported for policy violations, suspicious activity, or other issues (includes banned users).</p>
+                <div class="input-group mb-3">
+                    <input type="text" id="user-search-input-flagged" class="form-control" placeholder="Search flagged users by name or email...">
+                    <button class="btn btn-outline-primary search-btn" type="button" data-table="flagged-users-table"><i class="bi bi-search"></i> Search</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Reason / Flagged For</th>
+                                <th scope="col">Date Flagged</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="flagged-users-table">
+                            <!-- Flagged user rows will be dynamically loaded here by JavaScript -->
+                        </tbody>
+                    </table>
+                    <p class="text-muted small mt-3" id="no-flagged-users-message" style="display: none;">No flagged users requiring immediate attention.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Other Admin Sections (Placeholders) -->
+        <div id="roles-content" class="sub-content-section">
+             <div class="admin-card"><h4 class="text-primary">Roles Management</h4><p>Role management functionality would be here.</p></div>
+        </div>
+        <div id="tutoring-sessions-content" class="sub-content-section">
+             <div class="admin-card"><h4 class="text-primary">Tutoring Sessions</h4><p>Tutoring session management functionality would be here.</p></div>
+        </div>
+        <div id="job-listings-content" class="sub-content-section">
+             <div class="admin-card"><h4 class="text-primary">Job Listings</h4><p>Job listings management functionality would be here.</p></div>
+        </div>
+        <div id="applications-content" class="sub-content-section">
+             <div class="admin-card"><h4 class="text-primary">Applications</h4><p>Application management functionality would be here.</p></div>
+        </div>
+        <div id="messages-content" class="sub-content-section">
+             <div class="admin-card"><h4 class="text-primary">Messages</h4><p>Message management functionality would be here.</p></div>
+        </div>
+        <div id="system-settings-content" class="sub-content-section">
+             <div class="admin-card"><h4 class="text-primary">System Settings</h4><p>System settings functionality would be here.</p></div>
+        </div>
+        <div id="reports-content" class="sub-content-section">
+             <div class="admin-card"><h4 class="text-primary">Reports</h4><p>Reporting functionality would be here.</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white pt-5 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <a class="navbar-brand d-flex align-items-center mb-3" href="./landing_page.html">
+                    <img src="logo.jpeg"SkillConnect Logo" height="60"> <!-- Placeholder for logo.jpeg -->
+                </a>
+                <p class="text-muted">Temporary minds. Share skills. Shape the future – with skillConnect.</p>
+                <p class="text-muted small">© 2023 SkillConnect. All rights reserved.</p>
+                <p class="text-muted small mb-0">Group B</p>
+            </div>
+
+            <div class="col-lg-2 col-md-4 mb-4">
+                <h5 class="text-uppercase fw-bold mb-4">All Pages</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="./landing_page.html" class="text-white text-decoration-none">Home</a></li>
+                    <li class="mb-2"><a href="./courses_page.html" class="text-white text-decoration-none">All Courses</a></li> 
+                    <li class="mb-2"><a href="./faq.html" class="text-white text-decoration-none">Contact</a></li>
+                    <li class="mb-2"><a href="./aboutUs.html" class="text-white text-decoration-none">About Us</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Jobs</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-4 mb-4">
+                <h5 class="text-uppercase fw-bold mb-4">Policies</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Terms and Conditions</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Refund and Returns Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-4 mb-4">
+                <h5 class="text-uppercase fw-bold mb-4">Stay Updated</h5>
+                <p class="text-muted">Subscribe to our newsletter for the latest updates.</p>
+                <div class="input-group mb-3">
+                    <input type="email" id="newsletter-email" class="form-control" placeholder="Your Email">
+                    <button class="btn btn-primary" type="button" id="subscribe-btn">Subscribe</button>
+                </div>
+                <div class="d-flex">
+                    <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4 bg-secondary">
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="small text-muted mb-0">© 2023 SkillConnect. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <p class="small text-muted mb-0">Group B</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to permanently delete <strong id="deleteUserName"></strong> (<span id="deleteUserEmail"></span>)? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ban Confirmation Modal -->
+<div class="modal fade" id="banConfirmationModal" tabindex="-1" aria-labelledby="banConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="banConfirmationModalLabel">Confirm Ban</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to ban <strong id="banUserName"></strong> (<span id="banUserEmail"></span>)? This will move the user to the banned list.
+                <div class="mb-3 mt-3">
+                    <label for="banReason" class="form-label">Reason for banning (optional):</label>
+                    <textarea class="form-control" id="banReason" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-warning" id="confirmBanBtn">Ban User</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Unban Confirmation Modal -->
+<div class="modal fade" id="unbanConfirmationModal" tabindex="-1" aria-labelledby="unbanConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unbanConfirmationModalLabel">Confirm Unban</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to unban <strong id="unbanUserName"></strong> (<span id="unbanUserEmail"></span>)? This will remove them from the flagged list. They will need to re-register to become an active user.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirmUnbanBtn">Unban User</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Edit User Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm">
+                    <input type="hidden" id="edit-student-id" name="student_id">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit-first-name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="edit-first-name" name="first_name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="edit-last-name" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="edit-last-name" name="last_name" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit-username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="edit-username" name="username" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="edit-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="edit-email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit-date-of-birth" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="edit-date-of-birth" name="date_of_birth">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="edit-cnic" class="form-label">CNIC</label>
+                            <input type="text" class="form-control" id="edit-cnic" name="cnic">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit-age" class="form-label">Age</label>
+                            <input type="number" class="form-control" id="edit-age" name="age">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="edit-phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="edit-phone" name="phone">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-bio" class="form-label">Bio</label>
+                        <textarea class="form-control" id="edit-bio" name="bio" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-academic-history" class="form-label">Academic History</label>
+                        <textarea class="form-control" id="edit-academic-history" name="academic_history" rows="3"></textarea>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit-country" class="form-label">Country</label>
+                            <input type="text" class="form-control" id="edit-country" name="country">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="edit-province" class="form-label">Province</label>
+                            <input type="text" class="form-control" id="edit-province" name="province">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit-city" class="form-label">City</label>
+                            <input type="text" class="form-control" id="edit-city" name="city">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="edit-area" class="form-label">Area</label>
+                            <input type="text" class="form-control" id="edit-area" name="area">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-street" class="form-label">Street</label>
+                        <input type="text" class="form-control" id="edit-street" name="street">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-postal-code" class="form-label">Postal Code</label>
+                        <input type="text" class="form-control" id="edit-postal-code" name="postal_code">
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="edit-agreed-terms" name="agreed_terms">
+                        <label class="form-check-label" for="edit-agreed-terms">
+                            Agreed to Terms
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="edit-is-approved" name="is_approved">
+                        <label class="form-check-label" for="edit-is-approved">
+                            Is Approved
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="editUserForm">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View User Details Modal -->
+<div class="modal fade" id="viewUserModal" tabindex="-1" aria-labelledby="viewUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewUserModalLabel">User Profile Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <dl class="row">
+                        <dt class="col-sm-3">Student ID:</dt>
+                        <dd class="col-sm-9" id="view-student-id"></dd>
+
+                        <dt class="col-sm-3">Name:</dt>
+                        <dd class="col-sm-9" id="view-full-name"></dd>
+
+                        <dt class="col-sm-3">Username:</dt>
+                        <dd class="col-sm-9" id="view-username"></dd>
+
+                        <dt class="col-sm-3">Email:</dt>
+                        <dd class="col-sm-9" id="view-email"></dd>
+
+                        <dt class="col-sm-3">Date of Birth:</dt>
+                        <dd class="col-sm-9" id="view-date-of-birth"></dd>
+
+                        <dt class="col-sm-3">CNIC:</dt>
+                        <dd class="col-sm-9" id="view-cnic"></dd>
+
+                        <dt class="col-sm-3">Age:</dt>
+                        <dd class="col-sm-9" id="view-age"></dd>
+
+                        <dt class="col-sm-3">Phone:</dt>
+                        <dd class="col-sm-9" id="view-phone"></dd>
+
+                        <dt class="col-sm-3">Bio:</dt>
+                        <dd class="col-sm-9" id="view-bio"></dd>
+
+                        <dt class="col-sm-3">Academic History:</dt>
+                        <dd class="col-sm-9" id="view-academic-history"></dd>
+
+                        <dt class="col-sm-3">Country:</dt>
+                        <dd class="col-sm-9" id="view-country"></dd>
+
+                        <dt class="col-sm-3">Province:</dt>
+                        <dd class="col-sm-9" id="view-province"></dd>
+
+                        <dt class="col-sm-3">City:</dt>
+                        <dd class="col-sm-9" id="view-city"></dd>
+
+                        <dt class="col-sm-3">Area:</dt>
+                        <dd class="col-sm-9" id="view-area"></dd>
+
+                        <dt class="col-sm-3">Street:</dt>
+                        <dd class="col-sm-9" id="view-street"></dd>
+
+                        <dt class="col-sm-3">Postal Code:</dt>
+                        <dd class="col-sm-9" id="view-postal-code"></dd>
+
+                        <dt class="col-sm-3">Agreed Terms:</dt>
+                        <dd class="col-sm-9" id="view-agreed-terms"></dd>
+                        
+                        <dt class="col-sm-3">Is Approved:</dt>
+                        <dd class="col-sm-9" id="view-is-approved"></dd>
+
+                        <dt class="col-sm-3">Approved At:</dt>
+                        <dd class="col-sm-9" id="view-approved-at"></dd>
+
+                        <dt class="col-sm-3">Registered On:</dt>
+                        <dd class="col-sm-9" id="view-created-at"></dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Select necessary DOM elements
+    const sidebarLinks = document.querySelectorAll('.admin-sidebar .nav-link');
+    const userManagementTabs = document.querySelectorAll('.nav-tabs .nav-link');
+    const contentSections = document.querySelectorAll('.admin-content .sub-content-section');
+    
+    // Table bodies
+    const allUsersTableBody = document.getElementById('all-users-table');
+    const pendingApprovalsTableBody = document.getElementById('pending-approvals-table');
+    const flaggedUsersTableBody = document.getElementById('flagged-users-table');
+
+    // Messages for empty tables
+    const noAllUsersMessage = document.getElementById('no-all-users-message');
+    const noPendingUsersMessage = document.getElementById('no-pending-users-message');
+    const noFlaggedUsersMessage = document.getElementById('no-flagged-users-message');
+
+    // Search inputs
+    const userSearchInputAll = document.getElementById('user-search-input-all');
+    const userSearchInputPending = document.getElementById('user-search-input-pending');
+    const userSearchInputFlagged = document.getElementById('user-search-input-flagged');
+
+    // Initialize Bootstrap Modals
+    const deleteConfirmationModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+    const banConfirmationModal = new bootstrap.Modal(document.getElementById('banConfirmationModal'));
+    const unbanConfirmationModal = new bootstrap.Modal(document.getElementById('unbanConfirmationModal'));
+    const editUserModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+    const viewUserModal = new bootstrap.Modal(document.getElementById('viewUserModal'));
+    
+    // Variables to store the ID of the user currently being processed
+    let currentStudentIdToDelete = null;
+    let currentStudentIdToBan = null;
+    let currentBannedIdToUnban = null; // New for unban action
+
+    // Store fetched data globally for filtering/re-rendering without re-fetching
+    let allStudentsData = [];
+    let bannedUsersData = [];
+
+    /**
+     * Toggles the visibility of content sections based on the target ID.
+     * Also updates the 'active' class on the corresponding navigation tabs.
+     * @param {string} targetId - The ID of the content section to display.
+     */
+    function showContent(targetId) {
+        contentSections.forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(targetId).classList.add('active');
+
+        userManagementTabs.forEach(tab => {
+            if (tab.dataset.target === targetId) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+    }
+
+    // Event listener for user management tabs (e.g., "All Users", "Pending Approvals")
+    userManagementTabs.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            const targetId = this.dataset.target;
+            showContent(targetId);
+            // Re-render tables based on current data and selected tab
+            renderAllUsersTable();
+            renderPendingApprovalsTable();
+            renderFlaggedUsersTable();
+        });
+    });
+
+    /**
+     * Fetches all student and banned user data from the backend in a single request.
+     */
+    async function fetchAllData() {
+        try {
+            const response = await fetch('get_data.php'); 
+            const data = await response.json(); 
+
+            if (data.success) {
+                allStudentsData = data.students;
+                bannedUsersData = data.banned_users;
+                
+                // Render all tables after fetching data
+                renderAllUsersTable();
+                renderPendingApprovalsTable();
+                renderFlaggedUsersTable();
+
+            } else {
+                console.error('Error fetching all data:', data.message);
+                allUsersTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Failed to load users: ${data.message}</td></tr>`;
+                pendingApprovalsTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Failed to load pending users: ${data.message}</td></tr>`;
+                flaggedUsersTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Failed to load flagged users: ${data.message}</td></tr>`;
+            }
+        } catch (error) {
+            console.error('Network error fetching all data:', error);
+            allUsersTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Network error: Could not connect to the server.</td></tr>`;
+            pendingApprovalsTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Network error: Could not connect to the server.</td></tr>`;
+            flaggedUsersTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Network error: Could not connect to the server.</td></tr>`;
+        }
+    }
+
+    /**
+     * Renders the "All Registered Users" table.
+     * @param {string} searchTerm - Optional search term for client-side filtering.
+     */
+    function renderAllUsersTable(searchTerm = '') {
+        allUsersTableBody.innerHTML = '';
+        noAllUsersMessage.style.display = 'none';
+        searchTerm = searchTerm.toLowerCase();
+
+        const filteredStudents = allStudentsData.filter(student => {
+            const name = `${student.first_name} ${student.last_name}`.toLowerCase();
+            const email = student.email.toLowerCase();
+            return name.includes(searchTerm) || email.includes(searchTerm);
+        });
+
+        if (filteredStudents.length > 0) {
+            filteredStudents.forEach((student, index) => {
+                const statusBadge = student.is_approved == 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-warning">Pending</span>';
+                const approvedStatus = student.is_approved == 1 ? 'Yes' : 'No';
+                const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td class="user-name">${student.first_name} ${student.last_name}</td>
+                        <td class="user-email">${student.email}</td>
+                        <td>${statusBadge}</td>
+                        <td>${approvedStatus}</td>
+                        <td>${new Date(student.created_at).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info me-1 action-btn edit-user" data-id="${student.student_id}" title="Edit User"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-warning me-1 action-btn ban-user" data-id="${student.student_id}" data-name="${student.first_name} ${student.last_name}" data-email="${student.email}" title="Ban User"><i class="bi bi-person-slash"></i> Ban</button>
+                            <button class="btn btn-sm btn-danger me-1 action-btn delete-user" data-id="${student.student_id}" data-name="${student.first_name} ${student.last_name}" data-email="${student.email}" title="Delete User"><i class="bi bi-trash"></i> Delete</button>
+                            <button class="btn btn-sm btn-secondary action-btn view-user" data-id="${student.student_id}" title="View Profile"><i class="bi bi-eye"></i></button>
+                        </td>
+                    </tr>
+                `;
+                allUsersTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            attachUserActionListeners();
+        } else {
+            noAllUsersMessage.style.display = 'block';
+        }
+    }
+
+    /**
+     * Renders the "Pending Approvals" table.
+     * @param {string} searchTerm - Optional search term for client-side filtering.
+     */
+    function renderPendingApprovalsTable(searchTerm = '') {
+        pendingApprovalsTableBody.innerHTML = '';
+        noPendingUsersMessage.style.display = 'none';
+        searchTerm = searchTerm.toLowerCase();
+
+        const pendingStudents = allStudentsData.filter(student => {
+            const name = `${student.first_name} ${student.last_name}`.toLowerCase();
+            const email = student.email.toLowerCase();
+            return (student.is_approved == 0) && (name.includes(searchTerm) || email.includes(searchTerm));
+        });
+
+        if (pendingStudents.length > 0) {
+            pendingStudents.forEach((student, index) => {
+                const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td class="user-name">${student.first_name} ${student.last_name}</td>
+                        <td class="user-email">${student.email}</td>
+                        <td>${new Date(student.created_at).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1 action-btn approve-user" data-id="${student.student_id}" title="Approve User"><i class="bi bi-check-lg"></i> Approve</button>
+                            <button class="btn btn-sm btn-danger me-1 action-btn delete-user" data-id="${student.student_id}" data-name="${student.first_name} ${student.last_name}" data-email="${student.email}" title="Reject User"><i class="bi bi-x-lg"></i> Reject</button>
+                            <button class="btn btn-sm btn-secondary action-btn view-user" data-id="${student.student_id}" title="View Details"><i class="bi bi-eye"></i></button>
+                        </td>
+                    </tr>
+                `;
+                pendingApprovalsTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            attachUserActionListeners();
+        } else {
+            noPendingUsersMessage.style.display = 'block';
+        }
+    }
+
+    /**
+     * Renders the "Flagged Users" table (banned users).
+     * @param {string} searchTerm - Optional search term for client-side filtering.
+     */
+    function renderFlaggedUsersTable(searchTerm = '') {
+        flaggedUsersTableBody.innerHTML = '';
+        noFlaggedUsersMessage.style.display = 'none';
+        searchTerm = searchTerm.toLowerCase();
+
+        const filteredBannedUsers = bannedUsersData.filter(bannedUser => {
+            const name = `${bannedUser.first_name} ${bannedUser.last_name}`.toLowerCase();
+            const email = bannedUser.email.toLowerCase();
+            const reason = bannedUser.reason_for_ban ? bannedUser.reason_for_ban.toLowerCase() : '';
+            return name.includes(searchTerm) || email.includes(searchTerm) || reason.includes(searchTerm);
+        });
+
+        if (filteredBannedUsers.length > 0) {
+            filteredBannedUsers.forEach((bannedUser, index) => {
+                const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td class="user-name">${bannedUser.first_name} ${bannedUser.last_name}</td>
+                        <td class="user-email">${bannedUser.email}</td>
+                        <td>${bannedUser.reason_for_ban || 'N/A'}</td>
+                        <td>${new Date(bannedUser.banned_at).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1 action-btn unban-user" data-id="${bannedUser.banned_id}" data-name="${bannedUser.first_name} ${bannedUser.last_name}" data-email="${bannedUser.email}" title="Unban User"><i class="bi bi-person-check"></i> Unban</button>
+                            <!-- Note: 'View' for banned users might show limited original info -->
+                            <!-- <button class="btn btn-sm btn-secondary action-btn view-user" data-id="${bannedUser.original_student_id}" title="View Details"><i class="bi bi-eye"></i></button> -->
+                        </td>
+                    </tr>
+                `;
+                flaggedUsersTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            attachUserActionListeners();
+        } else {
+            noFlaggedUsersMessage.style.display = 'block';
+        }
+    }
+
+
+    /**
+     * Attaches click event listeners to the action buttons (edit, ban, delete, view, approve, unban)
+     * within the user list tables. This function is called after tables are populated.
+     */
+    function attachUserActionListeners() {
+        // Clear previous listeners to prevent duplicates
+        document.querySelectorAll('.delete-user').forEach(button => button.onclick = null);
+        document.querySelectorAll('.ban-user').forEach(button => button.onclick = null);
+        document.querySelectorAll('.unban-user').forEach(button => button.onclick = null);
+        document.querySelectorAll('.edit-user').forEach(button => button.onclick = null);
+        document.querySelectorAll('.view-user').forEach(button => button.onclick = null);
+        document.querySelectorAll('.approve-user').forEach(button => button.onclick = null);
+
+
+        // Listener for "Delete User" buttons (for all users and pending approvals)
+        document.querySelectorAll('.delete-user').forEach(button => {
+            button.onclick = function() {
+                currentStudentIdToDelete = this.dataset.id;
+                document.getElementById('deleteUserName').textContent = this.dataset.name;
+                document.getElementById('deleteUserEmail').textContent = this.dataset.email;
+                deleteConfirmationModal.show(); 
+            };
+        });
+
+        // Listener for "Ban User" buttons (from All Users)
+        document.querySelectorAll('.ban-user').forEach(button => {
+            button.onclick = function() {
+                currentStudentIdToBan = this.dataset.id;
+                document.getElementById('banUserName').textContent = this.dataset.name;
+                document.getElementById('banUserEmail').textContent = this.dataset.email;
+                document.getElementById('banReason').value = ''; 
+                banConfirmationModal.show(); 
+            };
+        });
+
+        // Listener for "Unban User" buttons (from Flagged Users)
+        document.querySelectorAll('.unban-user').forEach(button => {
+            button.onclick = function() {
+                currentBannedIdToUnban = this.dataset.id; // This is banned_id from banned_users table
+                document.getElementById('unbanUserName').textContent = this.dataset.name;
+                document.getElementById('unbanUserEmail').textContent = this.dataset.email;
+                unbanConfirmationModal.show();
+            };
+        });
+
+        // Listener for "Edit User" buttons (from All Users)
+        document.querySelectorAll('.edit-user').forEach(button => {
+            button.onclick = function() {
+                const studentId = this.dataset.id;
+                openEditUserModal(studentId); 
+            };
+        });
+
+        // Listener for "View Profile" buttons (from All Users and Pending Approvals)
+        document.querySelectorAll('.view-user').forEach(button => {
+            button.onclick = function() {
+                const studentId = this.dataset.id;
+                openViewUserModal(studentId); 
+            };
+        });
+
+        // Listener for "Approve User" buttons (from Pending Approvals)
+        document.querySelectorAll('.approve-user').forEach(button => {
+            button.onclick = async function() {
+                const studentId = this.dataset.id;
+                const confirmApprove = confirm('Are you sure you want to approve this user?'); // Simple confirmation
+                if (confirmApprove) {
+                    await sendUserAction('approve', studentId);
+                }
+            };
+        });
+    }
+
+    /**
+     * Sends a user action (delete, ban, approve, unban, update) to the backend.
+     * @param {string} actionType - The type of action (e.g., 'delete', 'ban', 'approve', 'unban', 'update').
+     * @param {string} studentId - The ID of the student to perform the action on.
+     * @param {object} additionalData - Optional additional data for the action (e.g., reason for ban, form data).
+     */
+    async function sendUserAction(actionType, id, additionalData = {}) {
+        const formData = new FormData();
+        formData.append('action', actionType);
+        
+        // Use student_id for students, banned_id for banned_users
+        if (actionType === 'unban') {
+             formData.append('banned_id', id);
+        } else {
+             formData.append('student_id', id);
+        }
+
+        for (const key in additionalData) {
+            formData.append(key, additionalData[key]);
+        }
+
+        try {
+            const response = await fetch('user_crud_actions.php', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                alert(data.message);
+                fetchAllData(); // Reload all data after any action
+            } else {
+                alert('Error: ' + data.message);
+                console.error('Action error:', data.message);
+            }
+        } catch (error) {
+            alert('Network error during action: ' + error.message);
+            console.error('Network error:', error);
+        }
+    }
+
+
+    /**
+     * Opens the Edit User modal and populates it with the student's current data.
+     * @param {string} studentId - The ID of the student to edit.
+     */
+    async function openEditUserModal(studentId) {
+        try {
+            // Fetch full student details from the backend using the dedicated script
+            const response = await fetch(`get_student_full_details.php?student_id=${studentId}`);
+            const data = await response.json();
+
+            if (data.success && data.student) {
+                const student = data.student;
+                // Populate the form fields in the edit modal
+                document.getElementById('edit-student-id').value = student.student_id;
+                document.getElementById('edit-first-name').value = student.first_name;
+                document.getElementById('edit-last-name').value = student.last_name;
+                document.getElementById('edit-username').value = student.username;
+                document.getElementById('edit-email').value = student.email;
+                document.getElementById('edit-date-of-birth').value = student.date_of_birth || '';
+                document.getElementById('edit-cnic').value = student.cnic || '';
+                document.getElementById('edit-age').value = student.age || '';
+                document.getElementById('edit-phone').value = student.phone || '';
+                document.getElementById('edit-bio').value = student.bio || '';
+                document.getElementById('edit-academic-history').value = student.academic_history || '';
+                document.getElementById('edit-country').value = student.country || '';
+                document.getElementById('edit-province').value = student.province || '';
+                document.getElementById('edit-city').value = student.city || '';
+                document.getElementById('edit-area').value = student.area || '';
+                document.getElementById('edit-street').value = student.street || '';
+                document.getElementById('edit-postal-code').value = student.postal_code || '';
+                document.getElementById('edit-agreed-terms').checked = (student.agreed_terms == 1); 
+                document.getElementById('edit-is-approved').checked = (student.is_approved == 1); 
+
+                editUserModal.show(); // Show the edit modal
+            } else {
+                alert('Error fetching student details: ' + data.message);
+                console.error('Error fetching student details:', data.message);
+            }
+        } catch (error) {
+            alert('Network error fetching student details: ' + error.message);
+            console.error('Network error fetching student details:', error);
+        }
+    }
+
+    /**
+     * Opens the View User Details modal and populates it with the student's full data.
+     * @param {string} studentId - The ID of the student to view.
+     */
+    async function openViewUserModal(studentId) {
+        try {
+            // Fetch full student details from the backend using the dedicated script
+            const response = await fetch(`get_student_full_details.php?student_id=${studentId}`);
+            const data = await response.json();
+
+            if (data.success && data.student) {
+                const student = data.student;
+                // Populate the display fields in the view modal
+                document.getElementById('view-student-id').textContent = student.student_id;
+                document.getElementById('view-full-name').textContent = `${student.first_name} ${student.last_name}`;
+                document.getElementById('view-username').textContent = student.username;
+                document.getElementById('view-email').textContent = student.email;
+                document.getElementById('view-date-of-birth').textContent = student.date_of_birth || 'N/A';
+                document.getElementById('view-cnic').textContent = student.cnic || 'N/A';
+                document.getElementById('view-age').textContent = student.age || 'N/A';
+                document.getElementById('view-phone').textContent = student.phone || 'N/A';
+                document.getElementById('view-bio').textContent = student.bio || 'N/A';
+                document.getElementById('view-academic-history').textContent = student.academic_history || 'N/A';
+                document.getElementById('view-country').textContent = student.country || 'N/A';
+                document.getElementById('view-province').textContent = student.province || 'N/A';
+                document.getElementById('view-city').textContent = student.city || 'N/A';
+                document.getElementById('view-area').textContent = student.area || 'N/A';
+                document.getElementById('view-street').textContent = student.street || 'N/A';
+                document.getElementById('view-postal-code').textContent = student.postal_code || 'N/A';
+                document.getElementById('view-agreed-terms').textContent = student.agreed_terms == 1 ? 'Yes' : 'No';
+                document.getElementById('view-is-approved').textContent = student.is_approved == 1 ? 'Yes' : 'No';
+                document.getElementById('view-approved-at').textContent = student.approved_at ? new Date(student.approved_at).toLocaleString() : 'N/A';
+                document.getElementById('view-created-at').textContent = new Date(student.created_at).toLocaleString();
+
+                viewUserModal.show(); // Show the view modal
+            } else {
+                alert('Error fetching student details for view: ' + data.message);
+                console.error('Error fetching student details for view:', data.message);
+            }
+        } catch (error) {
+            alert('Network error fetching student details for view: ' + error.message);
+            console.error('Network error fetching student details for view:', error);
+        }
+    }
+
+    /**
+     * Handles the submission of the Edit User form.
+     * Collects form data and sends it to the backend for updating.
+     */
+    document.getElementById('editUserForm').addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+
+        const formData = new FormData(this);
+        // Ensure is_approved checkbox sends correct value (1 or 0)
+        formData.set('is_approved', document.getElementById('edit-is-approved').checked ? '1' : '0');
+
+        await sendUserAction('update', formData.get('student_id'), Object.fromEntries(formData));
+        editUserModal.hide(); // Hide the modal after action
+    });
+
+    /**
+     * Event listener for the "Confirm Delete" button inside the delete confirmation modal.
+     * Sends a request to the backend to delete the student.
+     */
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
+        if (currentStudentIdToDelete) {
+            await sendUserAction('delete', currentStudentIdToDelete);
+            deleteConfirmationModal.hide();
+            currentStudentIdToDelete = null;
+        }
+    });
+
+    /**
+     * Event listener for the "Confirm Ban" button inside the ban confirmation modal.
+     * Sends a request to the backend to ban the student.
+     */
+    document.getElementById('confirmBanBtn').addEventListener('click', async function() {
+        if (currentStudentIdToBan) {
+            const banReason = document.getElementById('banReason').value; 
+            await sendUserAction('ban', currentStudentIdToBan, { reason: banReason });
+            banConfirmationModal.hide();
+            currentStudentIdToBan = null;
+        }
+    });
+
+    /**
+     * Event listener for the "Confirm Unban" button inside the unban confirmation modal.
+     * Sends a request to the backend to unban the user.
+     */
+    document.getElementById('confirmUnbanBtn').addEventListener('click', async function() {
+        if (currentBannedIdToUnban) {
+            await sendUserAction('unban', currentBannedIdToUnban);
+            unbanConfirmationModal.hide();
+            currentBannedIdToUnban = null;
+        }
+    });
+
+
+    // Initial fetch of all data when the page loads
+    fetchAllData();
+
+    // Attach search event listeners to the search buttons
+    document.querySelectorAll('.search-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const tableId = this.dataset.table;
+            let searchTerm = '';
+            if (tableId === 'all-users-table') {
+                searchTerm = userSearchInputAll.value;
+                renderAllUsersTable(searchTerm);
+            } else if (tableId === 'pending-approvals-table') {
+                searchTerm = userSearchInputPending.value;
+                renderPendingApprovalsTable(searchTerm);
+            } else if (tableId === 'flagged-users-table') {
+                searchTerm = userSearchInputFlagged.value;
+                renderFlaggedUsersTable(searchTerm);
+            }
+        });
+    });
+
+    // You can keep the existing sidebar and offcanvas logic as is.
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // These links navigate to different HTML pages, so no preventDefault needed.
+        });
+    });
+});
+</script>
+</body>
+</html>

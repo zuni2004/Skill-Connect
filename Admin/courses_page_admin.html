@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SkillConnect Admin - Course Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
+    <style>
+        /* General styling for smooth transitions and body background */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            transition: background 0.3s, color 0.3s;
+            background-color: #f8f9fa; /* Light grey background for admin */
+        }
+
+        /* Navbar styling */
+        .navbar {
+            padding: 1rem 2rem;
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 600;
+            margin: 0 10px;
+        }
+
+        .nav-icons i {
+            font-size: 1.3rem;
+            margin-right: 15px;
+            color: #1e1e2f; /* Dark text for icons */
+            cursor: pointer;
+        }
+
+        .nav-buttons .btn {
+            margin-left: 10px;
+        }
+
+        .navbar-brand img {
+            height: 80px;
+        }
+
+        /* Admin specific styles */
+        .admin-sidebar {
+            background: linear-gradient(to bottom, #220359, #4906bf); /* Dark gradient from hero section */
+            color: white;
+            padding-top: 20px;
+            min-height: calc(100vh - 80px); /* Assuming navbar height around 80px */
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 1000; 
+        }
+
+        .admin-sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 3px solid #ffc107; /* Highlight color from hero */
+        }
+
+        .admin-sidebar .nav-link i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Main content area styling */
+        .admin-content {
+            padding: 30px;
+            background-color: #f8f9fa;
+            flex-grow: 1; /* Allow content to take remaining space */
+        }
+
+        .admin-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        /* Consistent button styles from landing page */
+        .btn-primary {
+            background-color: #0d6efd; /* Bootstrap primary blue */
+            border-color: #0d6efd;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+
+        .btn-outline-primary {
+            color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .btn-outline-primary:hover {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .text-primary {
+            color: #0d6efd !important;
+        }
+
+        .bg-primary {
+            background-color: #0d6efd !important;
+        }
+        
+        .highlight {
+            background-color: #ffc107; /* Yellow highlight */
+            color: #000;
+            padding: 0 6px;
+            border-radius: 4px;
+        }
+
+        /* Specific badge color from landing page */
+        .badge.bg-success { background-color: #198754 !important; } /* Bootstrap green */
+        .badge.bg-danger { background-color: #dc3545 !important; } /* Bootstrap red */
+        .badge.bg-info { background-color: #0dcaf0 !important; } /* Bootstrap info */
+        .badge.bg-warning { background-color: #ffc107 !important; } /* Bootstrap warning */
+        .badge.bg-secondary { background-color: #6c757d !important; } /* Custom purple, adjust if needed */
+
+        /* Footer specific styles to match */
+        footer {
+            background-color: #212529 !important; /* Dark background */
+            color: white;
+        }
+
+        footer .text-muted {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        footer .text-white {
+            color: white !important;
+        }
+
+        footer .text-white:hover {
+            color: #ffc107 !important; /* Yellow highlight on hover for consistency */
+        }
+
+        /* Responsive adjustments for sidebar/offcanvas */
+        .offcanvas {
+            transition: none !important;
+        }
+        
+        @media (max-width: 767.98px) {
+            .admin-sidebar {
+                display: none; /* Hide default sidebar on small screens */
+            }
+            .offcanvas-start {
+                width: 250px; /* Adjust offcanvas width */
+            }
+            .admin-content {
+                width: 100%; /* Full width content on small screens */
+            }
+            .navbar-toggler {
+                display: block; /* Show toggler button */
+            }
+        }
+
+        @media (min-width: 768px) {
+            .navbar-toggler {
+                display: none; /* Hide toggler button on large screens */
+            }
+            .admin-sidebar {
+                display: block !important; /* Always show sidebar on large screens */
+            }
+            .offcanvas {
+                visibility: hidden; /* Hide offcanvas completely on large screens */
+            }
+            .offcanvas.show { /* Override Bootstrap's default for show on large screens */
+                transform: translateX(-100%); 
+            }
+        }
+
+        /* Specific content sections for course management page */
+        .sub-content-section {
+            display: none; /* Hide all sub-content sections by default */
+        }
+        .sub-content-section.active {
+            display: block; /* Show active sub-content section */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm">
+    <div class="container-fluid">
+        <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebarOffcanvas" aria-controls="adminSidebarOffcanvas" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand d-flex align-items-center" href="./landing_page.html">
+            <img src="logo.jpeg" alt="SkillConnect Logo"/>
+        </a>
+
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="./landing_page.html">Home </a></li>
+                <li class="nav-item"><a class="nav-link" href="./admin_dashboard.html">Admin Dashboard</a></li> 
+                <li class="nav-item"><a class="nav-link" href="./user_management.html">User Management</a></li>
+                <li class="nav-item"><a class="nav-link" href="job_listing_management.html">All Jobs</a></li>
+                <li class="nav-item"><a class="nav-link" href="courses_page_admin.html">All Courses</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Services
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="./registration_form_students_tutor.html">Tutoring</a></li>
+                        <li><a class="dropdown-item" href="./registration_form_jobSeekers_Employeers.html">Job Matching</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="./faq.html">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="./aboutUs.html">About Us</a></li>
+            </ul>
+
+            <div class="d-flex align-items-center nav-icons">
+                <span class="me-3 fw-bold">Admin User</span>
+                <i class="bi bi-person-circle fs-4 me-3"></i>
+                <div class="nav-buttons">
+                    <a href="../login.html" id="logout-btn" class="btn btn-outline-primary">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="d-flex">
+    <div class="admin-sidebar col-md-2">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="admin_dashboard.html">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="user_management.html">
+                    <i class="bi bi-people"></i> Manage Students
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="courses_page_admin.html">
+                    <i class="bi bi-book"></i>Manage Courses
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="tutor_management.html">
+                    <i class="bi bi-calendar-check"></i>Manage Tutoring Sessions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="job_listing_management.html">
+                    <i class="bi bi-briefcase"></i>Manage Job Listings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="applications_admin.html">
+                    <i class="bi bi-file-earmark-text"></i>Manage JobSeekers
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="admin_messages.html">
+                    <i class="bi bi-chat-dots"></i> Manage Complaints
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="system_settings_admin.html">
+                    <i class="bi bi-box-seam"></i> System Settings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="reports_admin.html">
+                    <i class="bi bi-graph-up"></i> Manage Employees
+                </a>
+            </li>
+        </ul>
+    </div>
+            
+    <div class="offcanvas offcanvas-start admin-sidebar" tabindex="-1" id="adminSidebarOffcanvas" aria-labelledby="adminSidebarOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title text-white" id="adminSidebarOffcanvasLabel">Admin Navigation</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_dashboard.html">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./user_management.html">
+                        <i class="bi bi-people"></i> Users
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link active" href="courses_page_admin.html" data-target="all-courses-content">
+                        <i class="bi bi-book"></i> Courses
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="tutor_management.html" data-target="tutoring-sessions-content">
+                        <i class="bi bi-calendar-check"></i> Tutoring Sessions
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="job_listing_management.html" data-target="job-listings-content">
+                        <i class="bi bi-briefcase"></i> Job Listings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="applications_admin.html" data-target="applications-content">
+                        <i class="bi bi-file-earmark-text"></i> Applications
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin_messages.html" data-target="messages-content">
+                        <i class="bi bi-chat-dots"></i> Messages
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="system_settings_admin.html" data-target="system-settings-content">
+                        <i class="bi bi-box-seam"></i> System Settings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="reports_admin.html" data-target="reports-content">
+                        <i class="bi bi-graph-up"></i> Reports
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="admin-content col-md-10">
+        <h1 class="mb-4 fw-bold text-primary">Course Management</h1>
+
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" data-target="all-courses-content">All Courses</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-target="add-course-content">Add New Course</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-target="pending-courses-content">Pending Courses</a>
+            </li>
+        </ul>
+
+        <!-- All Courses Content -->
+        <div id="all-courses-content" class="sub-content-section active">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">All Available Courses</h4>
+                <div class="input-group mb-3">
+                    <input type="text" id="course-search-input-all" class="form-control" placeholder="Search courses by title or instructor...">
+                    <button class="btn btn-outline-primary search-btn" type="button" data-table="all-courses-table"><i class="bi bi-search"></i> Search</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Instructor</th>
+                                <th scope="col">Category</th> <!-- Display as Category in UI -->
+                                <th scope="col">Status</th>
+                                <th scope="col">Approved</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-courses-table">
+                            <!-- Course rows will be dynamically loaded here by JavaScript -->
+                        </tbody>
+                    </table>
+                    <p class="text-muted small mt-3" id="no-all-courses-message" style="display: none;">No courses found.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Course Content -->
+        <div id="add-course-content" class="sub-content-section">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">Add New Course</h4>
+                <p class="text-muted">Fill in the details below to add a new course to the platform.</p>
+                <form id="add-course-form">
+                    <div class="mb-3">
+                        <label for="addCourseTitle" class="form-label">Course Title</label>
+                        <input type="text" class="form-control" id="addCourseTitle" name="title" required>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="addTutorId" class="form-label">Tutor ID</label>
+                            <input type="number" class="form-control" id="addTutorId" name="tutor_id" placeholder="Enter Tutor ID (e.g., 1)" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="addCourseCategory" class="form-label">Category</label> <!-- Input label remains Category -->
+                            <select class="form-select" id="addCourseCategory" name="category" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option>Programming</option>
+                                <option>Design</option>
+                                <option>Marketing</option>
+                                <option>Business</option>
+                                <option>Language</option>
+                                <option>Technology</option>
+                                <option>Photography</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="addCourseLocation" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="addCourseLocation" name="location" placeholder="e.g., Online, Lahore">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="addCourseMode" class="form-label">Mode</label>
+                            <select class="form-select" id="addCourseMode" name="mode" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option>Online</option>
+                                <option>In-person</option>
+                                <option>Hybrid</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="addFeeType" class="form-label">Fee Type</label>
+                            <select class="form-select" id="addFeeType" name="fee_type" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option>Monthly</option>
+                                <option>Weekly</option>
+                                <option>Hourly</option>
+                                <option>Student-Based</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="addFeeAmount" class="form-label">Fee Amount ($)</label>
+                            <input type="number" class="form-control" id="addFeeAmount" name="fee_amount" step="0.01" min="0" value="0">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addCourseDescription" class="form-label">Course Description</label>
+                        <textarea class="form-control" id="addCourseDescription" name="description" rows="5" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addImageUrl" class="form-label">Image URL (Optional)</label>
+                        <input type="url" class="form-control" id="addImageUrl" name="image_url" placeholder="https://placehold.co/300x200">
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="addIsApproved" name="is_approved">
+                        <label class="form-check-label" for="addIsApproved">
+                            Mark as Approved
+                        </label>
+                    </div>
+                     <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="addIsActive" name="is_active" checked>
+                        <label class="form-check-label" for="addIsActive">
+                            Mark as Active
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Course</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Pending Courses Content -->
+        <div id="pending-courses-content" class="sub-content-section">
+            <div class="admin-card">
+                <h4 class="mb-3 text-primary">Pending Course Approvals</h4>
+                <p class="text-muted">Review and approve new courses submitted by instructors.</p>
+                <div class="input-group mb-3">
+                    <input type="text" id="course-search-input-pending" class="form-control" placeholder="Search pending courses by title or instructor...">
+                    <button class="btn btn-outline-primary search-btn" type="button" data-table="pending-courses-table"><i class="bi bi-search"></i> Search</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Instructor</th>
+                                <th scope="col">Category</th> <!-- Display as Category in UI -->
+                                <th scope="col">Submitted On</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pending-courses-table">
+                            <!-- Pending course rows will be dynamically loaded here by JavaScript -->
+                        </tbody>
+                    </table>
+                    <p class="text-muted small mt-3" id="no-pending-courses-message" style="display: none;">No pending course approvals at this time.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer class="bg-dark text-white pt-5 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <a class="navbar-brand d-flex align-items-center mb-3" href="./landing_page.html">
+                    <img src="logo.jpeg" alt="SkillConnect Logo" height="60">
+                </a>
+                <p class="text-muted">Temporary minds. Share skills. Shape the future – with skillConnect.</p>
+                <p class="text-muted small">© 2023 SkillConnect. All rights reserved.</p>
+                <p class="text-muted small mb-0">Group B</p>
+            </div>
+
+            <div class="col-lg-2 col-md-4 mb-4">
+                <h5 class="text-uppercase fw-bold mb-4">All Pages</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="./landing_page.html" class="text-white text-decoration-none">Home</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">All Courses</a></li>
+                    <li class="mb-2"><a href="./faq.html" class="text-white text-decoration-none">Contact</a></li>
+                    <li class="mb-2"><a href="./aboutUs.html" class="text-white text-decoration-none">About Us</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Jobs</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-4 mb-4">
+                <h5 class="text-uppercase fw-bold mb-4">Policies</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Terms and Conditions</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Refund and Returns Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-4 mb-4">
+                <h5 class="text-uppercase fw-bold mb-4">Stay Updated</h5>
+                <p class="text-muted">Subscribe to our newsletter for the latest updates.</p>
+                <div class="input-group mb-3">
+                    <input type="email" id="newsletter-email" class="form-control" placeholder="Your Email">
+                    <button class="btn btn-primary" type="button" id="subscribe-btn">Subscribe</button>
+                </div>
+                <div class="d-flex">
+                    <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4 bg-secondary">
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="small text-muted mb-0">© 2023 SkillConnect. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <p class="small text-muted mb-0">Group B</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Modals for Course Management -->
+
+<!-- Delete Course Confirmation Modal -->
+<div class="modal fade" id="deleteCourseConfirmationModal" tabindex="-1" aria-labelledby="deleteCourseConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteCourseConfirmationModalLabel">Confirm Course Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to permanently delete course <strong id="deleteCourseTitle"></strong> (ID: <span id="deleteCourseId"></span>)? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteCourseBtn">Delete Course</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Course Modal -->
+<div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="editCourseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCourseModalLabel">Edit Course Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editCourseForm">
+                    <input type="hidden" id="edit-course-id" name="course_id">
+                    <div class="mb-3">
+                        <label for="editCourseTitle" class="form-label">Course Title</label>
+                        <input type="text" class="form-control" id="editCourseTitle" name="title" required>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="editTutorId" class="form-label">Tutor ID</label>
+                            <input type="number" class="form-control" id="editTutorId" name="tutor_id" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="editCourseCategory" class="form-label">Category</label> <!-- Input label remains Category -->
+                            <select class="form-select" id="editCourseCategory" name="category" required>
+                                <option value="Programming">Programming</option>
+                                <option value="Design">Design</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Business">Business</option>
+                                <option value="Language">Language</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Photography">Photography</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="editCourseLocation" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="editCourseLocation" name="location">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="editCourseMode" class="form-label">Mode</label>
+                            <select class="form-select" id="editCourseMode" name="mode" required>
+                                <option value="Online">Online</option>
+                                <option value="In-person">In-person</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="editFeeType" class="form-label">Fee Type</label>
+                            <select class="form-select" id="editFeeType" name="fee_type" required>
+                                <option value="monthly">Monthly</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="hourly">Hourly</option>
+                                <option value="student_based">Student-Based</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="editFeeAmount" class="form-label">Fee Amount ($)</label>
+                            <input type="number" class="form-control" id="editFeeAmount" name="fee_amount" step="0.01" min="0">
+                        </div>
+                    </div>
+                     <div class="mb-3">
+                        <label for="editCourseRating" class="form-label">Rating</label>
+                        <input type="number" class="form-control" id="editCourseRating" name="rating" step="0.1" min="0" max="5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCourseDescription" class="form-label">Course Description</label>
+                        <textarea class="form-control" id="editCourseDescription" name="description" rows="5"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editImageUrl" class="form-label">Image URL</label>
+                        <input type="url" class="form-control" id="editImageUrl" name="image_url">
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="editIsApproved" name="is_approved">
+                        <label class="form-check-label" for="editIsApproved">
+                            Is Approved
+                        </label>
+                    </div>
+                     <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="editIsActive" name="is_active">
+                        <label class="form-check-label" for="editIsActive">
+                            Is Active
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="editCourseForm">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Course Details Modal -->
+<div class="modal fade" id="viewCourseModal" tabindex="-1" aria-labelledby="viewCourseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewCourseModalLabel">Course Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <dl class="row">
+                        <dt class="col-sm-4">Course ID:</dt>
+                        <dd class="col-sm-8" id="view-course-id"></dd>
+
+                        <dt class="col-sm-4">Title:</dt>
+                        <dd class="col-sm-8" id="view-course-title"></dd>
+                        
+                        <dt class="col-sm-4">Instructor:</dt>
+                        <dd class="col-sm-8" id="view-course-instructor"></dd>
+
+                        <dt class="col-sm-4">Category:</dt> <!-- Display as Category in UI -->
+                        <dd class="col-sm-8" id="view-course-category"></dd>
+
+                        <dt class="col-sm-4">Location:</dt>
+                        <dd class="col-sm-8" id="view-course-location"></dd>
+
+                        <dt class="col-sm-4">Mode:</dt>
+                        <dd class="col-sm-8" id="view-course-mode"></dd>
+
+                        <dt class="col-sm-4">Fee Type:</dt>
+                        <dd class="col-sm-8" id="view-fee-type"></dd>
+
+                        <dt class="col-sm-4">Fee Amount:</dt>
+                        <dd class="col-sm-8" id="view-fee-amount"></dd>
+
+                        <dt class="col-sm-4">Rating:</dt>
+                        <dd class="col-sm-8" id="view-course-rating"></dd>
+
+                        <dt class="col-sm-4">Description:</dt>
+                        <dd class="col-sm-8" id="view-course-description"></dd>
+
+                        <dt class="col-sm-4">Image:</dt>
+                        <dd class="col-sm-8"><img id="view-image-url" src="" alt="Course Image" class="img-fluid rounded" style="max-width: 200px; height: auto;"></dd>
+                        
+                        <dt class="col-sm-4">Is Approved:</dt>
+                        <dd class="col-sm-8" id="view-is-approved"></dd>
+
+                        <dt class="col-sm-4">Is Active:</dt>
+                        <dd class="col-sm-8" id="view-is-active"></dd>
+
+                        <dt class="col-sm-4">Approved At:</dt>
+                        <dd class="col-sm-8" id="view-approved-at"></dd>
+
+                        <dt class="col-sm-4">Created At:</dt>
+                        <dd class="col-sm-8" id="view-created-at"></dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- DOM Element Selections ---
+    const sidebarLinks = document.querySelectorAll('.admin-sidebar .nav-link');
+    const courseManagementTabs = document.querySelectorAll('.nav-tabs .nav-link');
+    const contentSections = document.querySelectorAll('.admin-content .sub-content-section');
+    
+    // Table bodies
+    const allCoursesTableBody = document.getElementById('all-courses-table');
+    const pendingCoursesTableBody = document.getElementById('pending-courses-table');
+
+    // Messages for empty tables
+    const noAllCoursesMessage = document.getElementById('no-all-courses-message');
+    const noPendingCoursesMessage = document.getElementById('no-pending-courses-message');
+
+    // Search inputs
+    const courseSearchInputAll = document.getElementById('course-search-input-all');
+    const courseSearchInputPending = document.getElementById('course-search-input-pending');
+
+    // Modals
+    const deleteCourseConfirmationModal = new bootstrap.Modal(document.getElementById('deleteCourseConfirmationModal'));
+    const editCourseModal = new bootstrap.Modal(document.getElementById('editCourseModal'));
+    const viewCourseModal = new bootstrap.Modal(document.getElementById('viewCourseModal'));
+    
+    // Variables to store the ID of the course currently being processed
+    let currentCourseIdToDelete = null;
+
+    // Store fetched data globally for filtering/re-rendering
+    let allCoursesData = [];
+
+    // --- General Tab & Content Switching ---
+    /**
+     * Toggles the visibility of content sections and updates active class on tabs.
+     * @param {string} targetId - The ID of the content section to display.
+     */
+    function showContent(targetId) {
+        contentSections.forEach(section => {
+            section.classList.remove('active');
+        });
+        const targetContent = document.getElementById(targetId);
+        if (targetContent) {
+            targetContent.classList.add('active');
+        }
+        
+        courseManagementTabs.forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.target === targetId);
+        });
+
+        // Update sidebar active state as well for consistency
+        sidebarLinks.forEach(link => {
+            const linkHref = link.getAttribute('href');
+            // Check if the link's href corresponds to the current page (courses_page_admin.html)
+            // and if its data-target matches any course-related tab being shown.
+            if (linkHref && linkHref.includes('courses_page_admin.html')) {
+                 if (['all-courses-content', 'add-course-content', 'pending-courses-content'].includes(targetId)) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            } else if (linkHref === './admin_dashboard.html') { // Special handling for dashboard if it's the default active on other pages
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    // Event listeners for main navigation tabs (All Courses, Add New, Pending)
+    courseManagementTabs.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            const targetId = this.dataset.target;
+            showContent(targetId);
+            // Re-render tables based on current data and selected tab
+            renderAllCoursesTable();
+            renderPendingCoursesTable();
+        });
+    });
+
+    // --- Data Fetching ---
+    /**
+     * Fetches all course data from the backend in a single request.
+     */
+    async function fetchAllCourseData() {
+        try {
+            const response = await fetch('get_course_data.php'); 
+            const data = await response.json(); 
+
+            if (data.success) {
+                allCoursesData = data.courses; // This is where data is assigned
+                
+                // Render all tables after fetching data
+                renderAllCoursesTable();
+                renderPendingCoursesTable();
+
+            } else {
+                console.error('Error fetching course data:', data.message);
+                allCoursesTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Failed to load courses: ${data.message}</td></tr>`;
+                pendingCoursesTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Failed to load pending courses: ${data.message}</td></tr>`;
+            }
+        } catch (error) {
+            console.error('Network error fetching course data:', error);
+            allCoursesTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Network error: Could not connect to the server.</td></tr>`;
+            pendingCoursesTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Network error: Could not connect to the server.</td></tr>`;
+        }
+    }
+
+    // --- Table Rendering Functions ---
+
+    /**
+     * Renders the "All Available Courses" table.
+     * @param {string} searchTerm - Optional search term for client-side filtering.
+     */
+    function renderAllCoursesTable(searchTerm = '') {
+        allCoursesTableBody.innerHTML = '';
+        noAllCoursesMessage.style.display = 'none';
+        searchTerm = searchTerm.toLowerCase();
+
+        const filteredCourses = allCoursesData.filter(course => {
+            const title = (course.title || '').toLowerCase();
+            const instructor = (course.tutor_name || '').toLowerCase(); // Use tutor_name from join
+            return title.includes(searchTerm) || instructor.includes(searchTerm);
+        });
+
+        if (filteredCourses.length > 0) {
+            filteredCourses.forEach((course, index) => {
+                const statusBadge = course.is_active == 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
+                const approvedStatus = course.is_approved == 1 ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-warning">No</span>';
+
+                const actionButtons = `
+                    <button class="btn btn-sm btn-info me-1 action-btn edit-course" data-id="${course.course_id}" title="Edit Course"><i class="bi bi-pencil"></i></button>
+                    ${course.is_active == 1 ? 
+                       `<button class="btn btn-sm btn-warning me-1 action-btn deactivate-course" data-id="${course.course_id}" title="Deactivate Course"><i class="bi bi-slash-circle"></i></button>` :
+                       `<button class="btn btn-sm btn-success me-1 action-btn activate-course" data-id="${course.course_id}" title="Activate Course"><i class="bi bi-check-circle"></i></button>`
+                    }
+                    <button class="btn btn-sm btn-danger me-1 action-btn delete-course" data-id="${course.course_id}" data-title="${course.title}" title="Delete Course"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-sm btn-secondary action-btn view-course" data-id="${course.course_id}" title="View Course Details"><i class="bi bi-eye"></i></button>
+                `;
+
+                const row = `
+                    <tr>
+                        <td>${course.course_id}</td>
+                        <td class="course-title">${course.title}</td>
+                        <td class="course-instructor">${course.tutor_name || 'N/A'}</td>
+                        <td class="course-category">${course.subject || 'N/A'}</td> <!-- Corrected to use 'subject' -->
+                        <td>${statusBadge}</td>
+                        <td>${approvedStatus}</td>
+                        <td>${actionButtons}</td>
+                    </tr>
+                `;
+                allCoursesTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            attachCourseActionListeners(); // Attach listeners after rendering
+        } else {
+            noAllCoursesMessage.style.display = 'block';
+        }
+    }
+
+    /**
+     * Renders the "Pending Course Approvals" table.
+     * @param {string} searchTerm - Optional search term for client-side filtering.
+     */
+    function renderPendingCoursesTable(searchTerm = '') {
+        pendingCoursesTableBody.innerHTML = '';
+        noPendingCoursesMessage.style.display = 'none';
+        searchTerm = searchTerm.toLowerCase();
+
+        const pendingCourses = allCoursesData.filter(course => {
+            const title = (course.title || '').toLowerCase();
+            const instructor = (course.tutor_name || '').toLowerCase();
+            return (course.is_approved == 0) && (title.includes(searchTerm) || instructor.includes(searchTerm));
+        });
+
+        if (pendingCourses.length > 0) {
+            pendingCourses.forEach((course, index) => {
+                const row = `
+                    <tr>
+                        <td>${course.course_id}</td>
+                        <td class="course-title">${course.title}</td>
+                        <td class="course-instructor">${course.tutor_name || 'N/A'}</td>
+                        <td class="course-category">${course.subject || 'N/A'}</td> <!-- Corrected to use 'subject' -->
+                        <td>${new Date(course.created_at).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1 action-btn approve-course" data-id="${course.course_id}" title="Approve Course"><i class="bi bi-check-lg"></i> Approve</button>
+                            <button class="btn btn-sm btn-danger me-1 action-btn reject-course" data-id="${course.course_id}" data-title="${course.title}" title="Reject Course"><i class="bi bi-x-lg"></i> Reject</button>
+                            <button class="btn btn-sm btn-secondary action-btn view-course" data-id="${course.course_id}" title="View Course Details"><i class="bi bi-eye"></i></button>
+                        </td>
+                    </tr>
+                `;
+                pendingCoursesTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            attachCourseActionListeners();
+        } else {
+            noPendingCoursesMessage.style.display = 'block';
+        }
+    }
+
+
+    // --- Action Button Event Listeners ---
+
+    /**
+     * Attaches click event listeners to the action buttons for courses.
+     * This function is called after tables are populated.
+     */
+    function attachCourseActionListeners() {
+        // Clear previous listeners to prevent duplicates
+        document.querySelectorAll('.delete-course').forEach(button => button.onclick = null);
+        document.querySelectorAll('.edit-course').forEach(button => button.onclick = null);
+        document.querySelectorAll('.view-course').forEach(button => button.onclick = null);
+        document.querySelectorAll('.approve-course').forEach(button => button.onclick = null);
+        document.querySelectorAll('.reject-course').forEach(button => button.onclick = null);
+        document.querySelectorAll('.deactivate-course').forEach(button => button.onclick = null);
+        document.querySelectorAll('.activate-course').forEach(button => button.onclick = null);
+
+        // Listener for "Delete Course" buttons (for all courses and pending rejections)
+        document.querySelectorAll('.delete-course, .reject-course').forEach(button => {
+            button.onclick = function() {
+                currentCourseIdToDelete = this.dataset.id;
+                document.getElementById('deleteCourseTitle').textContent = this.dataset.title;
+                document.getElementById('deleteCourseId').textContent = this.dataset.id;
+                deleteCourseConfirmationModal.show(); 
+            };
+        });
+
+        // Listener for "Edit Course" buttons
+        document.querySelectorAll('.edit-course').forEach(button => {
+            button.onclick = function() {
+                const courseId = this.dataset.id;
+                openEditCourseModal(courseId); 
+            };
+        });
+
+        // Listener for "View Course Details" buttons
+        document.querySelectorAll('.view-course').forEach(button => {
+            button.onclick = function() {
+                const courseId = this.dataset.id;
+                openViewCourseModal(courseId); 
+            };
+        });
+
+        // Listener for "Approve Course" buttons
+        document.querySelectorAll('.approve-course').forEach(button => {
+            button.onclick = async function() {
+                const courseId = this.dataset.id;
+                if (confirm('Are you sure you want to approve this course?')) {
+                    await sendCourseAction('approve', courseId);
+                }
+            };
+        });
+
+        // Listener for "Deactivate Course" buttons
+        document.querySelectorAll('.deactivate-course').forEach(button => {
+            button.onclick = async function() {
+                const courseId = this.dataset.id;
+                if (confirm('Are you sure you want to deactivate this course? It will no longer be visible to users.')) {
+                    await sendCourseAction('deactivate', courseId);
+                }
+            };
+        });
+
+        // Listener for "Activate Course" buttons
+        document.querySelectorAll('.activate-course').forEach(button => {
+            button.onclick = async function() {
+                const courseId = this.dataset.id;
+                if (confirm('Are you sure you want to activate this course? It will become visible to users again.')) {
+                    await sendCourseAction('activate', courseId);
+                }
+            };
+        });
+    }
+
+    // --- PHP Interaction Functions (Courses) ---
+
+    /**
+     * Sends a course action (add, update, delete, approve, reject, activate, deactivate) to the backend.
+     * @param {string} actionType - The type of action (e.g., 'add', 'update', 'delete', 'approve', 'reject', 'activate', 'deactivate').
+     * @param {string|number} courseId - The ID of the course for update/delete/approve/etc. (optional for 'add').
+     * @param {object} additionalData - Optional additional data for the action (e.g., form data for add/update).
+     */
+    async function sendCourseAction(actionType, courseId = null, additionalData = {}) {
+        const formData = new FormData();
+        formData.append('action', actionType);
+        if (courseId) {
+            formData.append('course_id', courseId);
+        }
+
+        for (const key in additionalData) {
+            // Convert boolean checkboxes to '1' or '0' for PHP
+            if (typeof additionalData[key] === 'boolean') {
+                formData.append(key, additionalData[key] ? '1' : '0');
+            } else {
+                formData.append(key, additionalData[key]);
+            }
+        }
+
+        try {
+            const response = await fetch('course_crud_actions.php', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                alert(data.message);
+                fetchAllCourseData(); // Reload all data after any action
+            } else {
+                alert('Error: ' + data.message);
+                console.error('Action error:', data.message);
+            }
+        } catch (error) {
+            alert('Network error during action: ' + error.message);
+            console.error('Network error:', error);
+        }
+    }
+
+    /**
+     * Opens the Edit Course modal and populates it with the course's current data.
+     * @param {string} courseId - The ID of the course to edit.
+     */
+    async function openEditCourseModal(courseId) {
+        try {
+            const response = await fetch(`get_course_full_details.php?course_id=${courseId}`);
+            const data = await response.json();
+
+            if (data.success && data.course) {
+                const course = data.course;
+                document.getElementById('edit-course-id').value = course.course_id;
+                document.getElementById('editCourseTitle').value = course.title;
+                document.getElementById('editTutorId').value = course.tutor_id;
+                document.getElementById('editCourseCategory').value = course.subject; // Corrected to use 'subject'
+                document.getElementById('editCourseLocation').value = course.location || '';
+                document.getElementById('editCourseMode').value = course.mode;
+                document.getElementById('editFeeType').value = course.fee_type;
+                document.getElementById('editFeeAmount').value = course.fee_amount;
+                document.getElementById('editCourseRating').value = course.rating || '';
+                document.getElementById('editCourseDescription').value = course.description || '';
+                document.getElementById('editImageUrl').value = course.image_url || '';
+                document.getElementById('editIsApproved').checked = (course.is_approved == 1); 
+                document.getElementById('editIsActive').checked = (course.is_active == 1); 
+
+                editCourseModal.show(); 
+            } else {
+                alert('Error fetching course details: ' + data.message);
+                console.error('Error fetching course details:', data.message);
+            }
+        } catch (error) {
+            alert('Network error fetching course details: ' + error.message);
+            console.error('Network error fetching course details:', error);
+        }
+    }
+
+    /**
+     * Opens the View Course Details modal and populates it with the course's full data.
+     * @param {string} courseId - The ID of the course to view.
+     */
+    async function openViewCourseModal(courseId) {
+        try {
+            const response = await fetch(`get_course_full_details.php?course_id=${courseId}`);
+            const data = await response.json();
+
+            if (data.success && data.course) {
+                const course = data.course;
+                document.getElementById('view-course-id').textContent = course.course_id;
+                document.getElementById('view-course-title').textContent = course.title;
+                document.getElementById('view-course-instructor').textContent = course.tutor_name || 'N/A'; 
+                document.getElementById('view-course-category').textContent = course.subject || 'N/A'; // Corrected to use 'subject'
+                document.getElementById('view-course-location').textContent = course.location || 'N/A';
+                document.getElementById('view-course-mode').textContent = course.mode || 'N/A';
+                document.getElementById('view-fee-type').textContent = course.fee_type || 'N/A';
+                document.getElementById('view-fee-amount').textContent = course.fee_amount ? `$${parseFloat(course.fee_amount).toFixed(2)}` : 'N/A';
+                document.getElementById('view-course-rating').textContent = course.rating || 'N/A';
+                document.getElementById('view-course-description').textContent = course.description || 'N/A';
+                
+                const imageUrlElement = document.getElementById('view-image-url');
+                if (course.image_url) {
+                    imageUrlElement.src = course.image_url;
+                    imageUrlElement.style.display = 'block';
+                } else {
+                    imageUrlElement.src = 'https://placehold.co/200x150/EEEEEE/333333?text=No+Image'; // Placeholder if no image
+                    imageUrlElement.style.display = 'block';
+                }
+
+                document.getElementById('view-is-approved').textContent = course.is_approved == 1 ? 'Yes' : 'No';
+                document.getElementById('view-is-active').textContent = course.is_active == 1 ? 'Yes' : 'No';
+                document.getElementById('view-approved-at').textContent = course.approved_at ? new Date(course.approved_at).toLocaleString() : 'N/A';
+                document.getElementById('view-created-at').textContent = new Date(course.created_at).toLocaleString();
+
+                viewCourseModal.show(); 
+            } else {
+                alert('Error fetching course details for view: ' + data.message);
+                console.error('Error fetching course details for view:', data.message);
+            }
+        } catch (error) {
+            alert('Network error fetching course details for view: ' + error.message);
+            console.error('Network error fetching course details for view:', error);
+        }
+    }
+
+    // --- Form Submission Handlers ---
+
+    // Add Course Form Submission
+    document.getElementById('add-course-form').addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        // Convert checkbox values to 1 or 0
+        data.is_approved = document.getElementById('addIsApproved').checked ? '1' : '0';
+        data.is_active = document.getElementById('addIsActive').checked ? '1' : '0';
+
+        await sendCourseAction('add', null, data);
+        this.reset(); // Clear form after submission
+        showContent('all-courses-content'); // Go back to all courses tab
+    });
+
+    // Edit Course Form Submission
+    document.getElementById('editCourseForm').addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        const courseId = formData.get('course_id');
+        
+        // Convert checkbox values to 1 or 0
+        data.is_approved = document.getElementById('editIsApproved').checked ? '1' : '0';
+        data.is_active = document.getElementById('editIsActive').checked ? '1' : '0';
+
+        await sendCourseAction('update', courseId, data);
+        editCourseModal.hide(); 
+    });
+
+    // Confirm Delete Course Button
+    document.getElementById('confirmDeleteCourseBtn').addEventListener('click', async function() {
+        if (currentCourseIdToDelete) {
+            await sendCourseAction('delete', currentCourseIdToDelete);
+            deleteCourseConfirmationModal.hide();
+            currentCourseIdToDelete = null;
+        }
+    });
+
+    // --- Search Functionality ---
+    document.querySelectorAll('.search-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const tableId = this.dataset.table;
+            let searchTerm = '';
+            if (tableId === 'all-courses-table') {
+                searchTerm = courseSearchInputAll.value;
+                renderAllCoursesTable(searchTerm);
+            } else if (tableId === 'pending-courses-table') {
+                searchTerm = courseSearchInputPending.value;
+                renderPendingCoursesTable(searchTerm);
+            }
+        });
+    });
+
+    // --- Footer & Logout Buttons ---
+    document.getElementById('subscribe-btn').addEventListener('click', function() {
+        const emailInput = document.getElementById('newsletter-email');
+        if (emailInput.value && emailInput.value.includes('@')) {
+            alert(`Thank you for subscribing with ${emailInput.value}!`);
+            emailInput.value = '';
+        } else {
+            alert('Please enter a valid email address.');
+        }
+    });
+    
+    document.getElementById('logout-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('Are you sure you want to logout?')) {
+            window.location.href = '../login.html'; 
+        }
+    });
+
+    // --- Initial Load ---
+    fetchAllCourseData(); 
+    showContent('all-courses-content'); // Show initial tab
+});
+</script>
+</body>
+</html>
