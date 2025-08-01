@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - SkillConnect</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      /* Navigation Bar Styling */
+      .navbar {
+        padding: 1rem 2rem;
+      }
+      .navbar-nav .nav-link {
+        font-weight: 600;
+        margin: 0 10px;
+      }
+      .nav-icons i {
+        font-size: 1.3rem;
+        margin-right: 15px;
+        color: #1e1e2f;
+        cursor: pointer;
+      }
+      .nav-buttons .btn {
+        margin-left: 10px;
+      }
+      .navbar-brand img {
+        height: 80px;
+      }
+
+      /* About Us Hero Section */
+      .about-hero {
+        background: linear-gradient(135deg, #220359, #4906bf);
+        color: white;
+        padding: 5rem 0;
+        text-align: center;
+      }
+
+      /* Mission Section */
+      .mission-section {
+        padding: 5rem 0;
+      }
+
+      .mission-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      /* Team Section */
+      .team-section {
+        padding: 3rem 0 5rem;
+        background-color: #f8f9fa;
+      }
+
+      .team-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s;
+        margin-bottom: 2rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+        /* Make the card wider and longer */
+        min-width: 260px;
+        max-width: 340px;
+        min-height: 420px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .team-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .team-img {
+        width: 100%;
+        height: 340px; /* Increased height for a longer image box */
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+
+      @media (max-width: 991px) {
+        .team-card {
+          min-width: 220px;
+          max-width: 100%;
+          min-height: 340px;
+        }
+        .team-img {
+          height: 220px;
+        }
+      }
+      @media (max-width: 767px) {
+        .team-card {
+          min-width: 100%;
+          min-height: 260px;
+        }
+        .team-img {
+          height: 180px;
+        }
+      }
+
+      /* Footer Styling */
+      footer {
+        background-color: #343a40;
+        color: white;
+        padding: 3rem 0 2rem;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .footer-links a:hover {
+        color: white;
+      }
+
+      .copyright {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+      <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img src="./logo.jpeg" alt="SkillConnect Logo" />
+        </a>
+
+        <!-- Navigation links + Icons + Buttons -->
+        <div class="collapse navbar-collapse justify-content-between">
+          <!-- Center nav links -->
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="./landing_page.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./all_jobs.php">All Jobs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./all_courses.php">All Courses</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Services
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="./registration_form_students_tutor.html"
+                    >Tutoring</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="./registration_form_jobSeekers_Employeers.html"
+                    >Job Matching</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./faq.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./aboutUs.html">About Us</a>
+            </li>
+          </ul>
+
+          <!-- Right side icons and buttons -->
+          <div class="d-flex align-items-center nav-icons">
+            <div class="nav-buttons">
+              <a href="./login.html" class="btn btn-primary">Login</a>
+              <!-- Register dropdown for all registration options -->
+              <div class="btn-group">
+                <a
+                  href="#"
+                  class="btn btn-outline-primary dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Register
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_students_tutor.html"
+                    >
+                      Student / Tutor Registration
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_employer.html"
+                    >
+                      Employer Registration
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_jobseeker.html"
+                    >
+                      Job Seeker Registration
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- About Us Hero Section -->
+    <section class="about-hero">
+      <div class="container">
+        <h1 class="display-3 fw-bold mb-4">About Us</h1>
+        <p class="lead">Learn more about SkillConnect and our mission</p>
+      </div>
+    </section>
+
+    <!-- Our Mission Section -->
+    <section class="mission-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="mission-card">
+              <h2 class="fw-bold mb-4">Our Mission</h2>
+              <p class="lead mb-4">
+                "Temporary minds. Share skills. Shape the future — with
+                SkillConnect."
+              </p>
+              <p>
+                SkillConnect was founded in 2025 with a simple yet powerful
+                vision: to create a platform where knowledge seekers and
+                knowledge sharers can connect seamlessly. We believe that
+                everyone has valuable skills to share and that learning should
+                be accessible to all.
+              </p>
+              <p>
+                Our team of passionate educators, technologists, and designers
+                have come together to build a platform that breaks down barriers
+                to education and creates opportunities for personal and
+                professional growth.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Team Section -->
+    <section class="team-section">
+      <div class="container">
+        <h2 class="text-center fw-bold mb-5">Meet Our Team</h2>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="team-card">
+              <img
+                src="./Zunaira.jpeg"
+                alt="Zunaira Abdul Aziz"
+                class="team-img img-fluid"
+              />
+              <div class="p-4 text-center">
+                <h4>Zunaira Abdul Aziz</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="team-card">
+              <img
+                src="./Eashal.jpeg"
+                alt="Eashal Yasin"
+                class="team-img img-fluid"
+              />
+              <div class="p-4 text-center">
+                <h4>Eashal Yasin</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="team-card">
+              <img
+                src="./Hamna.jpg"
+                alt="Hamna Fatima"
+                class="team-img img-fluid"
+              />
+              <div class="p-4 text-center">
+                <h4>Hamna Fatima</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="team-card">
+              <img
+                src="./Fatima.jpeg"
+                alt="Fatima Noorulain"
+                class="team-img img-fluid"
+              />
+              <div class="p-4 text-center">
+                <h4>Fatima Noorulain</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="team-card">
+              <img
+                src="./Areeba.jfif"
+                alt="Fatima Noorulain"
+                class="team-img img-fluid"
+              />
+              <div class="p-4 text-center">
+                <h4>Areeba Shahbaz</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-dark text-white pt-5 pb-4">
+      <div class="container">
+        <div class="row">
+          <!-- Logo and Tagline -->
+          <div class="col-lg-4 mb-4">
+            <a class="navbar-brand d-flex align-items-center mb-3" href="#">
+              <img src="./logo.jpeg" alt="SkillConnect Logo" height="60" />
+            </a>
+            <p class="text-muted">
+              Temporary minds. Share skills. Shape the future – with
+              skillConnect.
+            </p>
+            <p class="text-muted small">
+              © 2025 SkillConnect. All rights reserved.
+            </p>
+            <p class="text-muted small mb-0">Group B</p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-lg-2 col-md-4 mb-4">
+            <h5 class="text-uppercase fw-bold mb-4">All Pages</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a
+                  href="./landing_page.html"
+                  class="text-white text-decoration-none"
+                  >Home</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="./all_courses.html"
+                  class="text-white text-decoration-none"
+                  >All Courses</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="./faq.html" class="text-white text-decoration-none"
+                  >Contact</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="./aboutUs.html" class="text-white text-decoration-none"
+                  >About Us</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="./all_jobs.html"
+                  class="text-white text-decoration-none"
+                  >Jobs</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Policies -->
+          <div class="col-lg-3 col-md-4 mb-4">
+            <h5 class="text-uppercase fw-bold mb-4">Policies</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Terms and Conditions</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Refund and Returns Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="my-4 bg-secondary" />
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="small text-white mb-0">
+              © 2025 SkillConnect. All rights reserved.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <p class="small text-white mb-0">Group B</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

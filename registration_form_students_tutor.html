@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register as Student or Tutor - SkillConnect</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        background: linear-gradient(to right, #220359, #4906bf);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .register-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        padding: 2.5rem 2rem;
+        margin-top: 4rem;
+        margin-bottom: 4rem;
+      }
+      .register-btn {
+        font-size: 1.2rem;
+        padding: 0.75rem 2rem;
+        border-radius: 30px;
+        font-weight: 600;
+        transition: background 0.2s, color 0.2s;
+      }
+      .register-btn.student {
+        background: #220359;
+        color: #fff;
+        border: none;
+      }
+      .register-btn.student:hover {
+        background: #4906bf;
+        color: #fff;
+      }
+      .register-btn.tutor {
+        background: #ffc107;
+        color: #220359;
+        border: none;
+      }
+      .register-btn.tutor:hover {
+        background: #ffb300;
+        color: #220359;
+      }
+      .main-content {
+        flex: 1 0 auto;
+      }
+      .navbar-brand img {
+        height: 60px;
+      }
+      footer {
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+      <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img src="./logo.jpeg" alt="SkillConnect Logo" />
+        </a>
+
+        <!-- Navigation links + Icons + Buttons -->
+        <div class="collapse navbar-collapse justify-content-between">
+          <!-- Center nav links -->
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="./landing_page.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./all_jobs.php">All Jobs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./all_courses.php">All Courses</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Services
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="./registration_form_students_tutor.html"
+                    >Tutoring</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="./registration_form_jobSeekers_Employeers.html"
+                    >Job Matching</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./faq.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./aboutUs.html">About Us</a>
+            </li>
+          </ul>
+
+          <!-- Right side icons and buttons -->
+          <div class="d-flex align-items-center nav-icons">
+            <div class="nav-buttons">
+              <a href="./login.html" class="btn btn-primary">Login</a>
+              <!-- Register dropdown for all registration options -->
+              <div class="btn-group">
+                <a
+                  href="#"
+                  class="btn btn-outline-primary dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Register
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_students_tutor.html"
+                    >
+                      Student / Tutor Registration
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_employer.html"
+                    >
+                      Employer Registration
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_jobseeker.html"
+                    >
+                      Job Seeker Registration
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-7">
+            <div class="register-card text-center">
+              <h2 class="fw-bold mb-4" style="color: #220359">Register as</h2>
+              <p class="mb-4 text-muted">
+                Choose your path and join SkillConnect as a Student or a Tutor.
+              </p>
+              <div
+                class="d-flex flex-column flex-md-row justify-content-center gap-4"
+              >
+                <a
+                  href="registration_form_student.html"
+                  class="register-btn student mb-3 mb-md-0 w-100"
+                >
+                  <i class="bi bi-person-fill me-2"></i>Student Registration
+                </a>
+                <a
+                  href="registration_form_tutor.html"
+                  class="register-btn tutor w-100"
+                >
+                  <i class="bi bi-mortarboard-fill me-2"></i>Tutor Registration
+                </a>
+              </div>
+              <div class="mt-4">
+                <a
+                  href="landing_page.html"
+                  class="text-decoration-none text-primary"
+                >
+                  <i class="bi bi-arrow-left"></i> Back to Home
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-dark text-white pt-5 pb-4">
+      <div class="container">
+        <div class="row">
+          <!-- Logo and Tagline -->
+          <div class="col-lg-4 mb-4">
+            <a class="navbar-brand d-flex align-items-center mb-3" href="#">
+              <img src="./logo.jpeg" alt="SkillConnect Logo" height="60" />
+            </a>
+            <p class="text-muted">
+              Temporary minds. Share skills. Shape the future – with
+              skillConnect.
+            </p>
+            <p class="text-muted small">
+              © 2025 SkillConnect. All rights reserved.
+            </p>
+            <p class="text-muted small mb-0">Group B</p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-lg-2 col-md-4 mb-4">
+            <h5 class="text-uppercase fw-bold mb-4">All Pages</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a
+                  href="./landing_page.html"
+                  class="text-white text-decoration-none"
+                  >Home</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="./all_courses.html"
+                  class="text-white text-decoration-none"
+                  >All Courses</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="./faq.html" class="text-white text-decoration-none"
+                  >Contact</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="./aboutUs.html" class="text-white text-decoration-none"
+                  >About Us</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="./all_jobs.html"
+                  class="text-white text-decoration-none"
+                  >Jobs</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Policies -->
+          <div class="col-lg-3 col-md-4 mb-4">
+            <h5 class="text-uppercase fw-bold mb-4">Policies</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Terms and Conditions</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Refund and Returns Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="my-4 bg-secondary" />
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="small text-white mb-0">
+              © 2025 SkillConnect. All rights reserved.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <p class="small text-white mb-0">Group B</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

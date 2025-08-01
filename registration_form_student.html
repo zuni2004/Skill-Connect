@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkillConnect - Registration</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+      }
+
+      .navbar {
+        padding: 1rem 2rem;
+      }
+      .navbar-nav .nav-link {
+        font-weight: 600;
+        margin: 0 10px;
+      }
+      .nav-icons i {
+        font-size: 1.3rem;
+        margin-right: 15px;
+        color: #1e1e2f;
+        cursor: pointer;
+      }
+      .nav-buttons .btn {
+        margin-left: 10px;
+      }
+      .navbar-brand img {
+        height: 80px;
+      }
+
+      /* Registration form styling */
+      .registration-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: none;
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+      }
+      .form-control {
+        height: 50px;
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+      }
+      .form-control:focus {
+        border-color: #4906bf;
+        box-shadow: 0 0 0 0.25rem rgba(73, 6, 191, 0.25);
+      }
+      .btn-register {
+        background: linear-gradient(to right, #220359, #4906bf);
+        color: white;
+        border: none;
+        height: 50px;
+        border-radius: 8px;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.3s;
+      }
+      .btn-register:hover {
+        background: linear-gradient(to right, #1a0247, #3a0599);
+      }
+      .terms-text {
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+
+      /* Footer styling from your main page */
+      footer {
+        background-color: #343a40;
+      }
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.55);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      .footer-links a:hover {
+        color: white;
+      }
+      .footer hr {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+      <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img src="./logo.jpeg" alt="SkillConnect Logo" />
+        </a>
+
+        <!-- Navigation links + Icons + Buttons -->
+        <div class="collapse navbar-collapse justify-content-between">
+          <!-- Center nav links -->
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="./landing_page.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./all_jobs.php">All Jobs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./all_courses.php">All Courses</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Services
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="./registration_form_students_tutor.html"
+                    >Tutoring</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="./registration_form_jobSeekers_Employeers.html"
+                    >Job Matching</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./faq.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./aboutUs.html">About Us</a>
+            </li>
+          </ul>
+
+          <!-- Right side icons and buttons -->
+          <div class="d-flex align-items-center nav-icons">
+            <div class="nav-buttons">
+              <a href="./login.html" class="btn btn-primary">Login</a>
+              <!-- Register dropdown for all registration options -->
+              <div class="btn-group">
+                <a
+                  href="#"
+                  class="btn btn-outline-primary dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Register
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_students_tutor.html"
+                    >
+                      Student / Tutor Registration
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_employer.html"
+                    >
+                      Employer Registration
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_jobseeker.html"
+                    >
+                      Job Seeker Registration
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="py-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <h2 class="text-center mb-4 fw-bold">Create Your Account</h2>
+          <div class="col-lg-8">
+            <div class="card registration-card p-4 p-md-5">
+              <h3 class="text-center mb-4 fw-bold">Student Registration</h3>
+
+              <form
+                method="POST"
+                action="student_register.php"
+                enctype="multipart/form-data"
+              >
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="firstName"
+                      name="first_name"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lastName"
+                      name="last_name"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="userName" class="form-label">User Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="userName"
+                    name="username"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="email" class="form-label">E-Mail</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    required
+                  />
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      name="password"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="confirmPassword" class="form-label"
+                      >Confirm Password</label
+                    >
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="confirmPassword"
+                      name="confirm_password"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="dateOfBirth" class="form-label"
+                    >Date of Birth</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="dateOfBirth"
+                    name="date_of_birth"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="cnic" class="form-label">CNIC</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cnic"
+                    name="cnic"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="age" class="form-label">Age</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="age"
+                    name="age"
+                    min="1"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="phone" class="form-label">Phone Number</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="phone"
+                    name="phone"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="photo" class="form-label">Upload Photo</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="photo"
+                    name="photo"
+                    accept="image/*"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="bio" class="form-label">Bio</label>
+                  <textarea
+                    class="form-control"
+                    id="bio"
+                    name="bio"
+                    rows="3"
+                    placeholder="Tell us about yourself"
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="mb-3">
+                  <label for="acdHistory" class="form-label"
+                    >Academic History</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="acdHistory"
+                    name="academic_history"
+                    rows="3"
+                    placeholder="Briefly describe your academic background"
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="country" class="form-label">Country</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="country"
+                      name="country"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="province" class="form-label">Province</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="province"
+                      name="province"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="city" class="form-label">City</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="city"
+                      name="city"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="area" class="form-label">Area</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="area"
+                      name="area"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="street" class="form-label">Street</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="street"
+                    name="street"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="postalCode" class="form-label">Postal Code</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="postalCode"
+                    name="postal_code"
+                    required
+                  />
+                </div>
+
+                <div class="mb-4 form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="termsCheck"
+                    name="agreed_terms"
+                    value="1"
+                    required
+                  />
+                  <label class="form-check-label terms-text" for="termsCheck">
+                    By signing up, I agree with the website's
+                    <a href="#" class="text-primary">Terms and Conditions</a>.
+                  </label>
+                </div>
+
+                <button type="submit" class="btn btn-register">Register</button>
+
+                <div class="text-center mt-3">
+                  <p class="text-muted">
+                    Already have an account?
+                    <a href="./login.html" class="text-primary">Login here</a>
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-dark text-white pt-5 pb-4">
+      <div class="container">
+        <div class="row">
+          <!-- Logo and Tagline -->
+          <div class="col-lg-4 mb-4">
+            <a class="navbar-brand d-flex align-items-center mb-3" href="#">
+              <img src="./logo.jpeg" alt="SkillConnect Logo" height="60" />
+            </a>
+            <p class="text-muted">
+              Temporary minds. Share skills. Shape the future – with
+              skillConnect.
+            </p>
+            <p class="text-muted small">
+              © 2025 SkillConnect. All rights reserved.
+            </p>
+            <p class="text-muted small mb-0">Group B</p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-lg-2 col-md-4 mb-4">
+            <h5 class="text-uppercase fw-bold mb-4">All Pages</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a
+                  href="./landing_page.html"
+                  class="text-white text-decoration-none"
+                  >Home</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="./all_courses.html"
+                  class="text-white text-decoration-none"
+                  >All Courses</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="./faq.html" class="text-white text-decoration-none"
+                  >Contact</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="./aboutUs.html" class="text-white text-decoration-none"
+                  >About Us</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="./all_jobs.html"
+                  class="text-white text-decoration-none"
+                  >Jobs</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Policies -->
+          <div class="col-lg-3 col-md-4 mb-4">
+            <h5 class="text-uppercase fw-bold mb-4">Policies</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Terms and Conditions</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Refund and Returns Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="my-4 bg-secondary" />
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="small text-white mb-0">
+              © 2025 SkillConnect. All rights reserved.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <p class="small text-white mb-0">Group B</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

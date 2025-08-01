@@ -1,0 +1,886 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkillConnect</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        transition: background 0.3s, color 0.3s;
+      }
+
+      .navbar {
+        padding: 1rem 2rem;
+      }
+
+      .navbar-nav .nav-link {
+        font-weight: 600;
+        margin: 0 10px;
+      }
+
+      .nav-icons i {
+        font-size: 1.3rem;
+        margin-right: 15px;
+        color: #1e1e2f;
+        cursor: pointer;
+      }
+
+      .nav-buttons .btn {
+        margin-left: 10px;
+      }
+
+      .navbar-brand img {
+        height: 80px; /* Increased from 80px to 110px */
+        transition: height 0.3s;
+      }
+
+      @media (max-width: 768px) {
+        .navbar-brand img {
+          height: 60px; /* Slightly bigger for mobile too */
+        }
+      }
+
+      .hero-section {
+        background: linear-gradient(to right, #220359, #4906bf);
+        color: white;
+        position: relative;
+      }
+
+      .hero-section h1 {
+        font-size: 2.5rem;
+        line-height: 1.4;
+      }
+
+      .hero-section .highlight {
+        background-color: #ffc107;
+        color: #000;
+        padding: 0 6px;
+        border-radius: 4px;
+      }
+
+      .hero-image-wrapper {
+        position: relative;
+      }
+
+      .main-hero-img {
+        max-width: 90%;
+        border-radius: 20px;
+      }
+
+      .floating-box {
+        position: absolute;
+        background: white;
+        color: #000;
+        padding: 8px 12px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .floating-box.students {
+        top: 20px;
+        right: 0;
+      }
+
+      .floating-box.enrolled {
+        bottom: 20px;
+        left: 0;
+      }
+
+      .courses-section {
+        background: linear-gradient(to right, #220359, #4906bf);
+        color: white;
+        padding: 5rem 0;
+      }
+
+      .courses-section .card {
+        background-color: rgba(255, 255, 255, 0.9);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .courses-section .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .courses-section .nav-pills .nav-link.active {
+        background-color: #ffc107;
+        color: #000;
+      }
+
+      .courses-section .nav-pills .nav-link {
+        color: white;
+      }
+
+      .courses-section h2,
+      .courses-section p {
+        color: white;
+      }
+
+      .courses-section .btn-outline-primary {
+        color: white;
+        border-color: white;
+      }
+
+      .courses-section .btn-outline-primary:hover {
+        background-color: white;
+        color: #220359;
+      }
+
+      .jobs-list-section {
+        padding: 3rem 0;
+        background: linear-gradient(
+          to right,
+          #220359,
+          #4906bf
+        ); /* Purple gradient */
+        min-height: 60vh;
+        color: #fff;
+      }
+
+      .job-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .job-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .jobs-list-section .card {
+        background: #fff;
+        color: #220359;
+      }
+
+      .jobs-list-section .card .btn-outline-primary {
+        border-color: #4906bf;
+        color: #4906bf;
+      }
+
+      .jobs-list-section .card .btn-outline-primary:hover {
+        background: #4906bf;
+        color: #fff;
+      }
+
+      @media (max-width: 768px) {
+        .hero-section h1 {
+          font-size: 1.8rem;
+          text-align: center;
+        }
+
+        .hero-section .btn {
+          display: block;
+          margin: 1.5rem auto 0;
+        }
+
+        .floating-box.students {
+          top: 10px;
+          right: 10px;
+        }
+
+        .floating-box.enrolled {
+          bottom: 10px;
+          left: 10px;
+        }
+        .learn-earn-section img {
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+      <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img src="./logo.jpeg" alt="SkillConnect Logo" />
+        </a>
+
+        <!-- Navigation links + Icons + Buttons -->
+        <div class="collapse navbar-collapse justify-content-between">
+          <!-- Center nav links -->
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="./landing_page.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./all_jobs.php">All Jobs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./all_courses.php">All Courses</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Services
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="./registration_form_students_tutor.html"
+                    >Tutoring</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="./registration_form_jobSeekers_Employeers.html"
+                    >Job Matching</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./faq.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./aboutUs.html">About Us</a>
+            </li>
+          </ul>
+
+          <!-- Right side icons and buttons -->
+          <div class="d-flex align-items-center nav-icons">
+            <div class="nav-buttons">
+              <a href="./login.html" class="btn btn-primary">Login</a>
+              <!-- Register dropdown for all registration options -->
+              <div class="btn-group">
+                <a
+                  href="#"
+                  class="btn btn-outline-primary dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Register
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_students_tutor.html"
+                    >
+                      Student / Tutor Registration
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_employer.html"
+                    >
+                      Employer Registration
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="./registration_form_jobseeker.html"
+                    >
+                      Job Seeker Registration
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section py-5">
+      <div class="container">
+        <div class="row align-items-center">
+          <!-- Left Content -->
+          <div class="col-md-6 text-white text-start">
+            <h1 class="fw-bold">
+              Where <span class="highlight">Skills</span> Meet Opportunity<br />
+              Learn. Teach. Work. All<br />
+              in One Place.
+            </h1>
+            <a
+              href="./registration_form_students_tutor.html"
+              class="btn btn-primary rounded-pill px-4 py-2 mt-4"
+            >
+              Register Now <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+          </div>
+
+          <!-- Right Image -->
+          <div class="col-md-6 text-center">
+            <div class="hero-image-wrapper position-relative">
+              <img
+                src="./hero_section.jpg"
+                alt="Hero"
+                class="img-fluid main-hero-img"
+              />
+              <div class="floating-box students">
+                Total Students <strong>15K</strong>
+              </div>
+              <div class="floating-box enrolled">36K+ Enrolled</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section py-5 bg-light">
+      <div class="container text-center">
+        <p class="text-primary fw-semibold">Our Top Features</p>
+        <h2 class="fw-bold">
+          Unlock Your Potential With
+          <span class="text-primary">SkillConnect</span>
+        </h2>
+        <p class="text-muted mb-5">
+          Connect with peers, grow your skills, and land remote opportunities —
+          all in one platform.
+        </p>
+
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-4">
+            <div
+              class="p-4 shadow rounded bg-white border-start border-4 border-info text-start"
+            >
+              <h5 class="fw-bold text-info">Verified Peer Tutors</h5>
+              <p class="text-muted">
+                Learn from qualified fellow students who understand your
+                academic needs and challenges.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div
+              class="p-4 shadow rounded bg-white border-start border-4 border-primary text-start"
+            >
+              <h5 class="fw-bold text-primary">Personalized Learning Paths</h5>
+              <p class="text-muted">
+                Choose from a variety of subjects and track your progress with
+                guided tutoring sessions.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div
+              class="p-4 shadow rounded bg-white border-start border-4 border-warning text-start"
+            >
+              <h5 class="fw-bold text-warning">Skill-Based Opportunities</h5>
+              <p class="text-muted">
+                Complete sessions, gain experience, and build your resume for
+                real-world job roles.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learn & Earn Section -->
+    <section class="learn-earn-section py-5">
+      <div class="container">
+        <div class="row align-items-center">
+          <!-- Image -->
+          <div class="col-md-6 text-center mb-4 mb-md-0">
+            <img
+              src="./features_section.jpg"
+              alt="Student Image"
+              class="img-fluid rounded-circle"
+              style="max-width: 400px"
+            />
+          </div>
+
+          <!-- Text Content -->
+          <div class="col-md-6">
+            <p class="text-primary fw-semibold">Get More About Us</p>
+            <h2 class="fw-bold mb-3">
+              Your Hub For <br />
+              <span class="text-primary">Learning & Earning</span>
+            </h2>
+            <p class="text-muted mb-4">
+              Whether you're tutoring, learning, hiring, or job hunting —
+              SkillConnect brings everyone together.
+            </p>
+
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2">
+                <i class="bi bi-check-circle-fill text-warning me-2"></i> Top
+                Peer Tutors and Employers
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-check-circle-fill text-warning me-2"></i> Access
+                Anytime, Anywhere
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-warning me-2"></i>
+                Flexible Booking & Job Application System
+              </li>
+            </ul>
+
+            <a
+              href="./registration_form_students_tutor.html"
+              class="btn btn-primary rounded-pill px-4 py-2"
+            >
+              Register Now <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Courses Section with Hero Background -->
+    <section class="courses-section">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <div>
+            <h2 class="fw-bold">Top Class Courses</h2>
+            <p class="mb-0">Explore Our Courses</p>
+          </div>
+          <div>
+            <ul class="nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link active" href="./all_courses.html"
+                  >All Courses</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Course 1 -->
+          <div class="col-md-3 mb-4">
+            <div class="card course-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1541462608143-67571c6738dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                class="card-img-top"
+                alt="Graphic Design Course"
+              />
+              <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="badge bg-success">Beginner</span>
+                  <span class="badge bg-primary">Count Course</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-decoration-line-through text-muted"
+                    >$50.00</span
+                  >
+                  <span class="fw-bold text-danger">$10.00</span>
+                </div>
+                <h5 class="card-title">
+                  The Complete Graphic Design for Beginners
+                </h5>
+                <div class="d-flex align-items-center mb-3">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/75.jpg"
+                    alt="Instructor"
+                    class="rounded-circle me-2"
+                    width="30"
+                  />
+                  <span>Wilson</span>
+                  <div class="ms-auto">
+                    <i class="fas fa-star text-warning"></i>
+                    <span>4.5 (60)</span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between text-muted small">
+                  <span><i class="far fa-clock"></i> 70h 45m</span>
+                  <span><i class="fas fa-users"></i> 202</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Course 2 -->
+          <div class="col-md-3 mb-4">
+            <div class="card course-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                class="card-img-top"
+                alt="JavaScript Course"
+              />
+              <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="badge bg-danger">Pro Expert</span>
+                  <span class="badge bg-info">Investing</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="fw-bold">$20.00</span>
+                </div>
+                <h5 class="card-title">Learning JavaScript With Imagination</h5>
+                <div class="d-flex align-items-center mb-3">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/42.jpg"
+                    alt="Instructor"
+                    class="rounded-circle me-2"
+                    width="30"
+                  />
+                  <span>Warren</span>
+                  <div class="ms-auto">
+                    <i class="fas fa-star text-warning"></i>
+                    <span>4.8 (86)</span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between text-muted small">
+                  <span><i class="far fa-clock"></i> 18h 20m</span>
+                  <span><i class="fas fa-users"></i> 86</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Course 3 -->
+          <div class="col-md-3 mb-4">
+            <div class="card course-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                class="card-img-top"
+                alt="Finance Course"
+              />
+              <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="badge bg-warning">Financial</span>
+                  <span class="badge bg-primary">Count Course</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-decoration-line-through text-muted"
+                    >$50.00</span
+                  >
+                  <span class="fw-bold text-danger">$15.00</span>
+                </div>
+                <h5 class="card-title">
+                  Financial Analyst Training & Investing Course
+                </h5>
+                <div class="d-flex align-items-center mb-3">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/22.jpg"
+                    alt="Instructor"
+                    class="rounded-circle me-2"
+                    width="30"
+                  />
+                  <span>Robert Fox</span>
+                  <div class="ms-auto">
+                    <i class="fas fa-star text-warning"></i>
+                    <span>4.2 (22)</span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between text-muted small">
+                  <span><i class="far fa-clock"></i> 11h 20m</span>
+                  <span><i class="fas fa-users"></i> 22</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Course 4 -->
+          <div class="col-md-3 mb-4">
+            <div class="card course-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                class="card-img-top"
+                alt="JavaScript Course"
+              />
+              <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="badge bg-purple">Special</span>
+                  <span class="badge bg-danger">Limited Pro</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-decoration-line-through text-muted"
+                    >$50.00</span
+                  >
+                  <span class="fw-bold text-danger">$9.00</span>
+                </div>
+                <h5 class="card-title">Learning JavaScript With Imagination</h5>
+                <div class="d-flex align-items-center mb-3">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/32.jpg"
+                    alt="Instructor"
+                    class="rounded-circle me-2"
+                    width="30"
+                  />
+                  <span>David Millar</span>
+                  <div class="ms-auto">
+                    <i class="fas fa-star text-warning"></i>
+                    <span>4.8 (22)</span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between text-muted small">
+                  <span><i class="far fa-clock"></i> 11h 20m</span>
+                  <span><i class="fas fa-users"></i> 22</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <a href="./all_courses.html" class="btn btn-outline-primary"
+            >See All Courses <i class="fas fa-arrow-right ms-2"></i
+          ></a>
+        </div>
+      </div>
+    </section>
+    <!-- Become Instructor/Student Section -->
+    <section class="py-5 bg-light">
+      <div class="container">
+        <div class="row g-4">
+          <!-- Instructor Card -->
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body p-4 p-lg-5 text-center">
+                <h2 class="fw-bold mb-3">Become an Instructor</h2>
+                <p class="text-muted mb-4">
+                  Share your knowledge with eager learners and build your
+                  teaching portfolio. Join our community of educators today.
+                </p>
+                <a
+                  href="./registration_form_students_tutor.html"
+                  class="btn btn-danger rounded-pill px-4 py-2"
+                >
+                  Apply Now <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Student Card -->
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body p-4 p-lg-5 text-center">
+                <h2 class="fw-bold mb-3">Become a Student</h2>
+                <p class="text-muted mb-4">
+                  Join millions of people from around the world learning
+                  together. Online learning has never been this accessible.
+                </p>
+                <a
+                  href="./registration_form_students_tutor.html"
+                  class="btn btn-primary rounded-pill px-4 py-2"
+                >
+                  Apply Now <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- All Jobs Section -->
+    <section class="jobs-list-section">
+      <div class="container">
+        <h2 class="fw-bold mb-4 text-center">All Jobs</h2>
+        <div class="row g-4">
+          <!-- Job 1 -->
+          <div class="col-md-4">
+            <div class="card job-card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Junior Web Developer</h5>
+                <p class="card-text mb-1">
+                  <i class="bi bi-geo-alt"></i> Remote
+                </p>
+                <p class="card-text">
+                  Join our team to build modern web applications. Basic HTML,
+                  CSS, JS required.
+                </p>
+                <a href="#" class="btn btn-outline-primary btn-sm">Apply Now</a>
+              </div>
+            </div>
+          </div>
+          <!-- Job 2 -->
+          <div class="col-md-4">
+            <div class="card job-card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Graphic Designer</h5>
+                <p class="card-text mb-1">
+                  <i class="bi bi-geo-alt"></i> Mumbai, India
+                </p>
+                <p class="card-text">
+                  Looking for a creative designer to work on branding and
+                  marketing materials.
+                </p>
+                <a href="#" class="btn btn-outline-primary btn-sm">Apply Now</a>
+              </div>
+            </div>
+          </div>
+          <!-- Job 3 -->
+          <div class="col-md-4">
+            <div class="card job-card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Finance Intern</h5>
+                <p class="card-text mb-1">
+                  <i class="bi bi-geo-alt"></i> Bangalore, India
+                </p>
+                <p class="card-text">
+                  Assist in financial analysis and reporting. Great for freshers
+                  in commerce.
+                </p>
+                <a href="#" class="btn btn-outline-primary btn-sm">Apply Now</a>
+              </div>
+            </div>
+          </div>
+          <!-- Add more jobs as needed -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Register as Employer or Job Seeker Section -->
+    <section class="py-5 bg-light">
+      <div class="container">
+        <div class="row g-4">
+          <!-- Employer Card -->
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body p-4 p-lg-5 text-center">
+                <h2 class="fw-bold mb-3">Looking to Hire?</h2>
+                <p class="text-muted mb-4">
+                  Post your job openings and find the best candidates for your
+                  company. Register as an employer and start hiring today.
+                </p>
+                <a
+                  href="./registration_form_employer.html"
+                  class="btn btn-danger rounded-pill px-4 py-2"
+                >
+                  Register as Employer <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- Job Seeker Card -->
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body p-4 p-lg-5 text-center">
+                <h2 class="fw-bold mb-3">Looking for a Job?</h2>
+                <p class="text-muted mb-4">
+                  Browse job listings and apply to your dream job. Register as a
+                  job seeker and take the next step in your career.
+                </p>
+                <a
+                  href="./registration_form_jobseeker.html"
+                  class="btn btn-primary rounded-pill px-4 py-2"
+                >
+                  Register as Job Seeker <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-dark text-white pt-5 pb-4">
+      <div class="container">
+        <div class="row">
+          <!-- Logo and Tagline -->
+          <div class="col-lg-4 mb-4">
+            <a class="navbar-brand d-flex align-items-center mb-3" href="#">
+              <img src="./logo.jpeg" alt="SkillConnect Logo" height="60" />
+            </a>
+            <p class="text-muted">
+              Temporary minds. Share skills. Shape the future – with
+              skillConnect.
+            </p>
+            <p class="text-muted small">
+              © 2025 SkillConnect. All rights reserved.
+            </p>
+            <p class="text-muted small mb-0">Group B</p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-lg-2 col-md-4 mb-4">
+            <h5 class="text-uppercase fw-bold mb-4">All Pages</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a
+                  href="./landing_page.html"
+                  class="text-white text-decoration-none"
+                  >Home</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="./all_courses.html"
+                  class="text-white text-decoration-none"
+                  >All Courses</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="./faq.html" class="text-white text-decoration-none"
+                  >Contact</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="./aboutUs.html" class="text-white text-decoration-none"
+                  >About Us</a
+                >
+              </li>
+              <li class="mb-2">
+                <a
+                  href="./all_jobs.html"
+                  class="text-white text-decoration-none"
+                  >Jobs</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Policies -->
+          <div class="col-lg-3 col-md-4 mb-4">
+            <h5 class="text-uppercase fw-bold mb-4">Policies</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Terms and Conditions</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-white text-decoration-none"
+                  >Refund and Returns Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="my-4 bg-secondary" />
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="small text-white mb-0">
+              © 2025 SkillConnect. All rights reserved.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <p class="small text-white mb-0">Group B</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
